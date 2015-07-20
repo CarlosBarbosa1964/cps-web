@@ -8,20 +8,60 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
-	<!-- SPRING MVC -->
+	<!-- TIMEOUT TO SESSION EXPIRE -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+	<!-- LOADER OF SPRING CONTEXT -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:ctx-cps-web.xml
+		</param-value>
+	</context-param>
+
+	<!-- SPRING LISTENER -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+
+	<!-- PRIMEFACES THEME CONFIG -->
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>bootstrap</param-value>
+	</context-param>
+
+	<!-- JAVASERVER FACES -->
+	<!-- Change to "Production" when ready to deploy. -->
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Development</param-value>
+	</context-param>
+
 	<servlet>
-		<servlet-name>spring</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:ctx-web-application-context.xml</param-value>
-        </init-param>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>spring</servlet-name>
-		<url-pattern>*.html</url-pattern>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.cps</url-pattern>
 	</servlet-mapping>
-
+	
+	<!-- SECURITY CONSTRAINT (BLOCK ACCESS OF CODE FROM XHTML) -->
+	<security-constraint>
+		<display-name>block-access-xhtml</display-name>
+		<web-resource-collection>
+			<web-resource-name>xhtml files</web-resource-name>
+			<url-pattern>*.xhtml</url-pattern>
+		</web-resource-collection>
+		<auth-constraint />
+	</security-constraint>
+	
 </web-app>
