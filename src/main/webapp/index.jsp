@@ -12,7 +12,7 @@
 	<center>
 		<h2>Testes</h2>
 		<h4>
-			<a href="/pages/main.cps">Main</a> <br/>
+			<a href="./pages/main.cps">Main</a> <br/>
 			<a href="/logon/logon.html">logon</a> <br/>
 		</h4>
 	</center>

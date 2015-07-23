@@ -42,6 +42,12 @@
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
 	</context-param>
+	
+	<!-- use this for embedded tomcat when web.xml is defined programatically and its not in the project directly -->
+	<context-param>
+		<param-name>com.sun.faces.forceLoadConfiguration</param-name>
+		<param-value>true</param-value>
+	</context-param>
 
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
@@ -53,6 +59,7 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.cps</url-pattern>
 	</servlet-mapping>
+	
 	
 	<!-- SECURITY CONSTRAINT (BLOCK ACCESS OF CODE FROM XHTML) -->
 	<security-constraint>
