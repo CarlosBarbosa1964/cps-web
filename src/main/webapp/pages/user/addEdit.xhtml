@@ -8,7 +8,12 @@
 	xmlns:p="http://primefaces.org/ui" template="../main.xhtml">
 
 	<ui:define name="content">
-		<h:form>
+		<f:view>
+			<f:event listener="#{userAddEditMB.onLoad}" type="preRenderView" />
+		</f:view>
+
+		<h:form id="userForm">
+			<p:growl id="msgs" showDetail="true" />
 			<h:inputHidden value="#{userAddEditMB.user.id}" />
 
 			<p:panelGrid columns="2">
@@ -26,7 +31,11 @@
 				<p:inputText value="#{userAddEditMB.user.password}" />
 				
 				<p:outputLabel value="#{labels.user_group}: " />
-				<p:inputText value="#{userAddEditMB.user.group.name}" />
+				<p:selectOneMenu value="#{userAddEditMB.user.group.id}" effect="fade" height="100" >
+					<p:ajax listener="#{userAddEditMB.onGroupChange}" update=":userForm:msgs" />
+					<f:selectItem itemLabel="#{labels.group_select}" itemValue="0" noSelectionOption="true" />
+					<f:selectItems value="#{userAddEditMB.selectOneGroup}" />
+				</p:selectOneMenu>
 
 				<f:facet name="footer">
 					<p:row>

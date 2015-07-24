@@ -11,18 +11,7 @@
 	<ui:composition>
 		<div id="mainMenu">
 			<h:form>
-				<p:panelMenu>
-			        <p:submenu label="#{labels.menu_dataset}">
-			            <p:menuitem value="#{labels.menu_user}" url="/pages/user/list.cps"
-			            			icon="ui-icon-person" />
-			        </p:submenu>
-			        <p:submenu label="#{labels.menu_settings}">
-			            <p:menuitem value="#{labels.menu_language}" url="/pages/settings/language.cps"
-			             	ajax="false" icon="ui-icon-wrench" />
-			             <p:menuitem value="#{labels.logout}" url="/j_spring_security_logout"
-			             	ajax="false" icon="ui-icon-wrench" />
-			        </p:submenu>
-			    </p:panelMenu>
+				<p:menu model="#{menuView.model}" toggleable="true" />
 		    </h:form>
 		</div>
 	</ui:composition>

@@ -32,12 +32,9 @@
 					rowsPerPageTemplate="5,10,20" rowKey="#{user.id}"
 					selectionMode="single">
 
-					<p:ajax event="rowSelect" listener="#{userMB.selectUser}"
-						oncomplete="enableButtons();" />
-					<p:ajax event="page" listener="#{userMB.unselectUser}"
-						oncomplete="unselectRows();" />
-					<p:ajax event="rowUnselect" listener="#{userMB.unselectUser}"
-						oncomplete="disableButtons();" />
+					<p:ajax event="rowSelect" listener="#{userMB.selectUser}" />
+					<p:ajax event="page" listener="#{userMB.unselectUser}" />
+					<p:ajax event="rowUnselect" listener="#{userMB.unselectUser}" />
 
 					<p:column>
 						<f:facet name="header">

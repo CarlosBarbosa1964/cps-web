@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="../main.xhtml">
+
+	<ui:define name="content">
+		<f:view>
+			<f:event listener="#{groupMB.onLoad}" type="preRenderView" />
+		</f:view>
+
+		<p:panel id="groupPanel" header="#{labels.group}">
+			<h:form id="groupForm">
+			    <p:growl id="msgs" showDetail="true" />
+				<p:commandButton widgetVar="addButton" value="#{labels.button_add}"
+					action="/pages/group/addEdit.cps" ajax="false"
+					actionListener="#{groupAddEditMB.add}" />
+				<p:commandButton widgetVar="deleteButton"
+					value="#{labels.button_delete}" action="#{groupMB.delete}"
+					update="groupDataTable" oncomplete="unselectRows();"  />
+				<p:commandButton widgetVar="updateButton"
+					value="#{labels.button_update}" update="groupDataTable"
+					action="/pages/group/addEdit.cps"
+					actionListener="#{groupAddEditMB.update}" />
+
+				<p:dataTable id="groupDataTable" widgetVar="dataTable" var="group" selection="#{groupMB.selectedGroup}"
+					loadingMessage="#{labels.group_load}" value="#{groupMB.groups}"
+					paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,20" rowKey="#{group.id}"
+					selectionMode="single">
+
+					<p:ajax event="rowSelect" listener="#{groupMB.selectGroup}"
+						update=":groupForm:msgs" />
+					<p:ajax event="page" listener="#{groupMB.unselectGroup}"
+						update=":groupForm:msgs" />
+					<p:ajax event="rowUnselect" listener="#{groupMB.unselectGroup}"
+						 update=":groupForm:msgs" />
+
+					<p:column visible="false">
+						<f:facet name="header">
+							<h:outputText value="#{labels.group_id}" />
+						</f:facet>
+						<h:outputText value="#{group.id}" />
+					</p:column>
+
+					<p:column width="20">
+						<f:facet name="header">
+							<h:outputText value="#{labels.group_active}" />
+						</f:facet>
+						<h:selectBooleanCheckbox value="#{group.active}" disabled="true" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{labels.group_name}" />
+						</f:facet>
+						<h:outputText value="#{group.name}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{labels.group_description}" />
+						</f:facet>
+						<h:outputText value="#{group.description}" />
+					</p:column>
+					
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+
+	</ui:define>
+</ui:composition>
