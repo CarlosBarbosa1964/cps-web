@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
 
 import br.com.ibtechnology.cpsweb.model.entities.UserEntity;
-import br.com.ibtechnology.cpsweb.model.repositories.IPersonRepository;
 import br.com.ibtechnology.cpsweb.model.repositories.IUserRepository;
 import br.com.ibtechnology.cpsweb.util.BaseBeans;
 

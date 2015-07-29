@@ -32,12 +32,12 @@ public class MenuView {
         DefaultSubMenu firstSubmenu = new DefaultSubMenu(this.getResourceProperty("labels", "menu_dataset"));
          
         DefaultMenuItem item = new DefaultMenuItem(this.getResourceProperty("labels", "menu_user"));
-        item.setUrl("/pages/user/list.cps");
+        item.setUrl("/pages/user/userlist.cps");
         item.setIcon("ui-icon-person");
         firstSubmenu.addElement(item);
          
         item = new DefaultMenuItem(this.getResourceProperty("labels", "menu_group"));
-        item.setUrl("/pages/group/list.cps");
+        item.setUrl("/pages/group/grouplist.cps");
         item.setIcon("ui-icon-bullet");
         firstSubmenu.addElement(item);
          
@@ -53,7 +53,7 @@ public class MenuView {
         
         item = new DefaultMenuItem(this.getResourceProperty("labels", "logout"));
         item.setIcon("ui-icon-locked");
-        item.setUrl("/j_spring_security_logout");
+        item.setUrl("/logout");
         secondSubmenu.addElement(item);
  
         model.addElement(secondSubmenu);

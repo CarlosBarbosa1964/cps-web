@@ -15,14 +15,14 @@
 		<p:panel id="userPanel" header="#{labels.user}">
 			<h:form id="userForm">
 				<p:commandButton widgetVar="addButton" value="#{labels.button_add}"
-					action="/pages/user/addEdit.cps" ajax="false"
+					action="/pages/user/userAddEdit.cps" ajax="false"
 					actionListener="#{userAddEditMB.add}" />
 				<p:commandButton widgetVar="deleteButton"
 					value="#{labels.button_delete}" action="#{userMB.delete}"
 					update="userDataTable" oncomplete="unselectRows();"  />
 				<p:commandButton widgetVar="updateButton"
 					value="#{labels.button_update}" update="userDataTable"
-					action="/pages/user/addEdit.cps"
+					action="/pages/user/userAddEdit.cps"
 					actionListener="#{userAddEditMB.update}" />
 
 				<p:dataTable id="userDataTable" widgetVar="dataTable" var="user"

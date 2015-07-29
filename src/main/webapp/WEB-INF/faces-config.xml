@@ -20,6 +20,14 @@
 		</locale-config>
 	</application>
 
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>loginPage</from-outcome>
+			<to-view-id>/login.cps</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
 	<application>
 		<resource-bundle>
 			<base-name>resources.messages</base-name>

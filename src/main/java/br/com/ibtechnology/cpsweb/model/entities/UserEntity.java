@@ -40,12 +40,14 @@ public class UserEntity extends BaseEntities<Long> {
 	private Date expire_date;
 	
 	private Date last_update;
+	
+	private String role;
 
 	public UserEntity() {
 	}
 
 	public UserEntity(Long id, PersonEntity person, String username, String password, GroupEntity group, boolean active,
-			boolean changePassNextLogon, boolean canChangePass, Date expire_date, Date last_update) {
+			boolean changePassNextLogon, boolean canChangePass, Date expire_date, Date last_update, String role) {
 		super();
 		this.person = person;
 		this.username = username;
@@ -56,6 +58,7 @@ public class UserEntity extends BaseEntities<Long> {
 		this.canChangePass = canChangePass;
 		this.expire_date = expire_date;
 		this.last_update = last_update;
+		this.role = role;
 	}
 
 	public PersonEntity getPerson() {
@@ -128,6 +131,14 @@ public class UserEntity extends BaseEntities<Long> {
 
 	public void setLast_update(Date last_update) {
 		this.last_update = last_update;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 

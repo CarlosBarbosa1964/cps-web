@@ -16,14 +16,14 @@
 			<h:form id="groupForm">
 			    <p:growl id="msgs" showDetail="true" />
 				<p:commandButton widgetVar="addButton" value="#{labels.button_add}"
-					action="/pages/group/addEdit.cps" ajax="false"
+					action="/pages/group/groupAddEdit.cps" ajax="false"
 					actionListener="#{groupAddEditMB.add}" />
 				<p:commandButton widgetVar="deleteButton"
 					value="#{labels.button_delete}" action="#{groupMB.delete}"
 					update="groupDataTable" oncomplete="unselectRows();"  />
 				<p:commandButton widgetVar="updateButton"
 					value="#{labels.button_update}" update="groupDataTable"
-					action="/pages/group/addEdit.cps"
+					action="/pages/group/groupAddEdit.cps"
 					actionListener="#{groupAddEditMB.update}" />
 
 				<p:dataTable id="groupDataTable" widgetVar="dataTable" var="group" selection="#{groupMB.selectedGroup}"

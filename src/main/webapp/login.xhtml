@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{languageMB.localeCode}">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/images/icon.ico" />
+		<title>Counter Parking Space for WEB :: IB Technology</title>
+	</h:head>
+
+	<h:body onload="document.content.dialog.login.username.focus();">
+		<div id="content" title="CPS Login">
+			<p:dialog header="#{labels.login_go}" id="dialog" modal="true"
+				closable="false" position="center" showEffect="slide"
+				draggable="true" resizable="false" visible="true">
+				<form id="formLogin" action="login"
+					method='post'>
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel for="username" value="#{labels.login_username}:" />
+						<p:inputText id="username" required="true"
+							label="#{labels.login_username}" />
+
+						<h:outputLabel for="password" value="#{labels.login_password}:" />
+						<p:password id="password" required="true"
+							label="#{labels.login_password}" />
+
+						<f:facet name="footer">
+							<c:if test="${param.erro == 'true'}">
+								<h:outputText value="#{labels.login_invalid}"
+									style="color: red; font-size: small;" />
+								<br />
+								<br />
+							</c:if>
+
+							<input name="submit" type="submit"
+								value="#{labels.login_action_go}" />
+						</f:facet>
+					</h:panelGrid>
+				</form>
+			</p:dialog>
+		</div>
+
+	</h:body>
+</f:view>
+</html>

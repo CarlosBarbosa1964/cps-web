@@ -6,5 +6,7 @@ import br.com.ibtechnology.cpsweb.model.entities.UserEntity;
 public interface IUserRepository extends JpaRepository<UserEntity, Long> {
 
 	public UserEntity findByUsernameAndPassword(String username, String password);
+	
+	public UserEntity findByUsername(String username);
 
 }
