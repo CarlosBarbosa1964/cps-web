@@ -6,13 +6,31 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
-	
+
 <body>
 	<ui:composition>
 		<div id="mainMenu">
 			<h:form>
-				<p:menu model="#{menuView.model}" toggleable="true" />
-		    </h:form>
+				<p:menubar>
+					<p:submenu label="#{labels.menu_dataset}">
+						<p:menuitem value="#{labels.menu_user}"
+							url="/pages/user/users.cps" icon="ui-icon-person" />
+						<p:menuitem value="#{labels.menu_group}"
+							url="/pages/group/grouplist.cps" icon="ui-icon-bullet" />
+					</p:submenu>
+
+					<p:menuitem value="#{labels.logout}" url="/logout"
+						icon="ui-icon-extlink" />
+					<f:facet name="options">
+						<p:selectOneMenu value="#{languageMB.localeCode}" effect="fade"
+							style="margin-right:10px">
+							<f:selectItems value="#{languageMB.countries}" />
+							<f:ajax event="change" listener="#{languageMB.localeCodeChanged}"
+								render="@all" />
+						</p:selectOneMenu>
+					</f:facet>
+				</p:menubar>
+			</h:form>
 		</div>
 	</ui:composition>
 </body>

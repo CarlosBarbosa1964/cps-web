@@ -29,8 +29,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Inject
 	private IUserRepository userRepository;
-	
-	
 
 	public CustomAuthenticationProvider() {
 		super();
@@ -40,28 +38,31 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
 		String username = authentication.getName();
 		String password = authentication.getCredentials().toString();
-		System.out.println("-------------------------------");
-		System.out.println(username);
-		System.out.println(password);
-		System.out.println("-------------------------------");
 		String _password = "";
 		try {
-			_password = CriptPass(password);
+			_password = criptPass(password);
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("-------------------------------");
+		System.out.println(username);
+		System.out.println(_password);
+		System.out.println("-------------------------------");
 
 		UserEntity user = this.userRepository.findByUsernameAndPassword(username, _password);
 
 		if (user != null) {
-			
-			List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+			if (user.isActive() && !user.isDeleted()) {
+				List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-			grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
+				grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
 
-			UserDetails userDetails = new User(username, password, grantedAuthorities);
-			return new UsernamePasswordAuthenticationToken(userDetails, password, grantedAuthorities);
+				UserDetails userDetails = new User(username, password, grantedAuthorities);
+				return new UsernamePasswordAuthenticationToken(userDetails, password, grantedAuthorities);
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
@@ -72,12 +73,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		return authentication.equals(UsernamePasswordAuthenticationToken.class);
 	}
 
-	private String CriptPass(String password) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+	private String criptPass(String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
 		byte messageDigest[] = algorithm.digest(password.getBytes("UTF-8"));
 		StringBuilder hexString = new StringBuilder();
 		for (byte b : messageDigest) {
-		  hexString.append(String.format("%02X", 0xFF & b));
+			hexString.append(String.format("%02X", 0xFF & b));
 		}
 		String pass = hexString.toString();
 		return pass;

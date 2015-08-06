@@ -1,25 +1,68 @@
 /*.ui-layout, .ui-layout-doc, .ui-layout-unit, .ui-layout-wrap, .ui-layout-bd, .ui-layout-hd {
 	border: none;
 } */
-
 .ui-widget {
-	font-size: 90% !important;	
+	font-size: 90% !important;
 }
 
 .ui-panelmenu .ui-panelmenu-header a {
 	color: black;
 }
 
+.ui-state-default .icon-add-user {
+	background-image: url(../images/new_user.png);
+}
+
+.ui-state-default .icon-edit-user {
+	background-image: url(../images/user_blue_edit.png);
+}
+
+.ui-state-default .icon-delete-user {
+	background-image: url(../images/delete.png);
+}
+
+html, body {
+	overflow: hidden;
+	width: auto;
+	height: auto;
+	margin: 0px;
+	position: absolute;
+	top: 1px;
+	bottom: 2px;
+	left: 2px;
+	right: 2px;
+}
+
 #mainFooter {
-	font-family: Verdana,sans-serif;
+	font-family: Verdana, sans-serif;
 	color: grey;
 	font-size: 10px;
 	font-weight: bolder;
 }
 
 #mainHeader {
-	font-family: Verdana,sans-serif;
+	font-family: Verdana, sans-serif;
 	color: black;
 	font-size: 60px;
 	font-weight: bolder;
+}
+
+#wrapper {
+	width: 100%;
+}
+
+#content {
+	position: relative;
+	margin-top: 2px;
+}
+
+#menu {
+	position: relative;
+	margin-top: 2px;
+}
+
+#footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 }

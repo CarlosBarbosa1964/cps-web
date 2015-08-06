@@ -9,7 +9,6 @@ import javax.inject.Named;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
 
-import br.com.ibtechnology.cpsweb.model.entities.UserEntity;
 import br.com.ibtechnology.cpsweb.util.BaseBeans;
 
 @Scope(value = WebApplicationContext.SCOPE_SESSION)
@@ -18,11 +17,9 @@ public class MyUtil extends BaseBeans {
 	
 	private static final long serialVersionUID = 1195002574775522306L;
 	
-	private static UserEntity userLogged;
 	private String basePathLogin;
 
 	public MyUtil() {
-		this.userLogged = new UserEntity();
 		basePathLogin = "/cps-web/";
 	}
 	
@@ -39,14 +36,6 @@ public class MyUtil extends BaseBeans {
 
 	public String getBasePathLogin() {
 		return basePathLogin;
-	}
-
-	public static UserEntity getUserLogged() {
-		return userLogged;
-	}
-
-	public static void setUserLogged(UserEntity userLogged) {
-		MyUtil.userLogged = userLogged;
 	}
 	
 }

@@ -20,34 +20,48 @@ public class UserEntity extends BaseEntities<Long> {
 	private static final long serialVersionUID = 5244643112563217776L;
 
 	@OneToOne
-	@JoinColumn(name="personID", nullable=false)
+	@JoinColumn(name="personID", nullable=true)
 	private PersonEntity person;
 	
+	@Column(nullable=false)
 	private String username;
 	
+	@Column(nullable=false)
 	private String password;
 	
 	@ManyToOne
 	@JoinColumn(name="groupID", nullable=false)
 	private GroupEntity group;
 	
+	
+	@Column(nullable=false)
 	private boolean active;
 	
+	@Column(nullable=false)
 	private boolean changePassNextLogon;
 	
+	@Column(nullable=false)
 	private boolean canChangePass;
 	
 	private Date expire_date;
 	
+	@Column(nullable=false)
 	private Date last_update;
 	
+	@Column(nullable=false)
 	private String role;
+	
+	@Column(nullable=false)
+	private boolean isProtected = false;
+	
+	@Column(nullable=false)
+	private boolean isDeleted = false;
 
 	public UserEntity() {
 	}
 
 	public UserEntity(Long id, PersonEntity person, String username, String password, GroupEntity group, boolean active,
-			boolean changePassNextLogon, boolean canChangePass, Date expire_date, Date last_update, String role) {
+			boolean changePassNextLogon, boolean canChangePass, Date expire_date, Date last_update, String role, boolean isProtected, boolean isDeleted) {
 		super();
 		this.person = person;
 		this.username = username;
@@ -59,6 +73,8 @@ public class UserEntity extends BaseEntities<Long> {
 		this.expire_date = expire_date;
 		this.last_update = last_update;
 		this.role = role;
+		this.isProtected = isProtected;
+		this.isDeleted = isDeleted;
 	}
 
 	public PersonEntity getPerson() {
@@ -139,6 +155,22 @@ public class UserEntity extends BaseEntities<Long> {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public boolean isProtected() {
+		return isProtected;
+	}
+
+	public void setProtected(boolean isProtected) {
+		this.isProtected = isProtected;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 

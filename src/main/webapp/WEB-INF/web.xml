@@ -34,7 +34,7 @@
 	<!-- PRIMEFACES THEME CONFIG -->
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>start</param-value>
+		<param-value>cupertino</param-value>
 	</context-param>
 
 	<!-- JAVASERVER FACES -->

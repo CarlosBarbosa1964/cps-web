@@ -16,7 +16,7 @@
 		<intercept-url pattern="/public/**" access="permitAll" />
 		<intercept-url pattern="/resources/**" access="hasAuthority('ROLE_USER')" />
 		<intercept-url pattern="/pages/**" access="hasAuthority('ROLE_USER')" />
-		<form-login login-page="/login.cps" authentication-failure-url="/login.cps?erro=true" default-target-url="/pages/main.cps" />
+		<form-login login-page="/login.cps" authentication-failure-url="/login.cps?erro=true" />
 		<logout logout-url="/logout"/>
 	</http>
 

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="../template.xhtml">
+
+	<ui:define name="content">
+		<f:view>
+			<f:event listener="#{userMB.onLoad}" type="preRenderView" />
+		</f:view>
+		<h:form>
+			<p:commandButton value="#{labels.button_add}"
+				update=":formCreate:dlgCreate"
+				oncomplete="PF('userDlgCreate').show()" icon="ui-icon-plus"
+				title="#{labels.button_add}" />
+		</h:form>
+
+		<h:form id="form">
+			<p:growl id="msgs" showDetail="true" />
+
+			<p:dataTable id="userDataTable" widgetVar="dataTable" var="user"
+				loadingMessage="#{labels.user_load}" value="#{userMB.users}"
+				paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,20" rowKey="#{user.id}"
+				selectionMode="single">
+				<f:facet name="header">${labels.users}</f:facet>
+				<p:column headerText="#{labels.user_id}" visible="false">
+					<h:outputText value="#{user.id}" />
+				</p:column>
+				<p:column headerText="#{labels.user_active}" width="35">
+					<h:selectBooleanCheckbox value="#{user.active}" disabled="true" />
+				</p:column>
+				<p:column headerText="#{labels.user_name}">
+					<h:outputText value="#{user.person.name}" />
+				</p:column>
+				<p:column headerText="#{labels.user_username}">
+					<h:outputText value="#{user.username}" />
+				</p:column>
+				<p:column headerText="#{labels.user_group}">
+					<h:outputText value="#{user.group.name}" />
+				</p:column>
+				<p:column style="width:7%;text-align: center">
+					<p:commandButton id="btnUpdate" update=":formUpdate:dlgUpdate"
+						oncomplete="PF('userDlgUpdate').show()" icon="ui-icon-pencil"
+						title="#{labels.button_update}">
+						<f:setPropertyActionListener value="#{user}"
+							target="#{userMB.selectedUser}" />
+					</p:commandButton>
+					<p:commandButton id="btnDelete" update=":formDelete:message"
+						oncomplete="PF('confirmDialog').show()" icon="ui-icon-trash"
+						title="#{labels.button_delete}">
+						<f:setPropertyActionListener value="#{user}"
+							target="#{userMB.selectedUser}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<!-- Form para Adição de novo Usuário -->
+
+		<h:form id="formCreate">
+			<p:dialog header="#{labels.user_add}" widgetVar="userDlgCreate"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+				<p:outputPanel id="dlgCreate" style="text-align:center;">
+					<p:panelGrid columns="2" columnClasses="label,value">
+
+						<h:outputText value="#{labels.user_name}:" />
+						<p:inputText value="#{userMB.selectedUser.person.name}" />
+
+						<h:outputText value="#{labels.user_username}" />
+						<p:inputText value="#{userMB.selectedUser.username}" />
+
+						<h:outputText value="#{labels.user_group}" />
+						<p:inputText value="#{userMB.selectedUser.group.name}" />
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<!-- Form para Edição do usuário selecionado -->
+		<h:form id="formUpdate">
+			<p:dialog header="#{labels.user_update}" widgetVar="userDlgUpdate"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+				<p:outputPanel id="dlgUpdate" style="text-align:center;">
+					<p:panelGrid columns="2"
+						rendered="#{not empty userMB.selectedUser}"
+						columnClasses="label,value">
+
+						<h:outputText value="#{labels.user_id}:" />
+						<h:outputText value="#{userMB.selectedUser.id}" />
+
+						<h:outputText value="#{labels.user_name}:" />
+						<h:outputText value="#{userMB.selectedUser.person.name}" />
+
+						<h:outputText value="#{labels.user_username}" />
+						<h:outputText value="#{userMB.selectedUser.username}" />
+
+						<h:outputText value="#{labels.user_group}" />
+						<h:outputText value="#{userMB.selectedUser.group.name}" />
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<!-- Form para Adição de novo Usuário -->
+
+		<h:form id="formDelete">
+			<p:growl id="message" showDetail="true" />
+
+			<p:confirmDialog id="confirmDialog" widgetVar="confirmDialog"
+				header="#{labels.button_delete}"
+				message="#{labels.user_confirm_delete}" icon="ui-icon-alert"
+				showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{labels.button_yes}"
+					actionListener="#{userMB.delete}"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update="message"
+					oncomplete="PF('confirmDialog').hide();" />
+				<p:commandButton value="#{labels.button_no}" type="button"
+					styleClass="ui-confirmdialog-no"
+					onclick="PF('confirmDialog').hide();" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

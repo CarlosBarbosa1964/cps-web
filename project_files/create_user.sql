@@ -1,0 +1,12 @@
+USE [master]
+GO
+
+CREATE LOGIN [ib] WITH PASSWORD='IBtech844', DEFAULT_DATABASE=[IB_CPS_DB], DEFAULT_LANGUAGE=[Português (Brasil)], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+GO
+
+USE [IB_CPS_DB]
+GO
+
+/****** Object:  User [ib]    Script Date: 05/08/2015 14:31:36 ******/
+CREATE USER [ib] FOR LOGIN [ib] WITH DEFAULT_SCHEMA=[dbo]
+GO

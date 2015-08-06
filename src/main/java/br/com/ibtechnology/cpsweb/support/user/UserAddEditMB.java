@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
-import org.primefaces.event.SelectEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -40,8 +39,8 @@ public class UserAddEditMB extends BaseBeans {
 	@Inject
 	private IUserRepository userRepository;
 
-	@Inject
-	private UserMB mbUserBean;
+//	@Inject
+//	private UserMB mbUserBean;
 	
 	@Inject
 	private FacesContext context;
@@ -97,12 +96,12 @@ public class UserAddEditMB extends BaseBeans {
 	}
 
 	public void update() {
-		this.user = this.mbUserBean.getSelectedUser();
+//		this.user = this.mbUserBean.getSelectedUser();
 		this.title = this.getResourceProperty("labels", "user_update");
 	}
 
 	public void cancel() {
-		this.mbUserBean.unselectUser();
+//		this.mbUserBean.unselectUser();
 	}
 
 	public void save() {
