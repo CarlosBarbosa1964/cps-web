@@ -1,33 +1,28 @@
 package br.com.ibtechnology.cpsweb.business;
 
-import java.util.List;
+import javax.inject.Named;
 
-import org.hibernate.Session;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.WebApplicationContext;
 
 import br.com.ibtechnology.cpsweb.model.business.IUserController;
 import br.com.ibtechnology.cpsweb.model.entities.UserEntity;
-import br.com.ibtechnology.cpsweb.util.HibernateUtil;
+import br.com.ibtechnology.cpsweb.util.BaseBeans;
 
-public class UserController implements IUserController {
+@Scope(value = WebApplicationContext.SCOPE_SESSION)
+@Named(value = "userController")
+public class UserController extends BaseBeans implements IUserController {
 
-	@Override
-	public UserEntity findByUser(UserEntity user) {
-		UserEntity model = null;
-		Session session = HibernateUtil.getSession().getSessionFactory().getCurrentSession();
-		return null;
-	}
+	private static final long serialVersionUID = -334157061586036475L;
 
 	@Override
-	public List<UserEntity> listAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public UserEntity getAuthenticatedUser() {
+		UserEntity user= new UserEntity();
+		user = (UserEntity)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return user;
 	}
 
-	@Override
-	public UserEntity login(UserEntity user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 }

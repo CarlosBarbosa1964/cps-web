@@ -280,13 +280,13 @@ INSERT INTO [dbo].[Users]
            ,[last_update])
      VALUES
            (NULL
-           ,"Admin"
-           ,"6EAAF868BFC7D3F97B1ADF3B68D6094CE5F5ACFA704692ACB996DC5B1900F319"
+           ,'Admin'
+           ,'6EAAF868BFC7D3F97B1ADF3B68D6094CE5F5ACFA704692ACB996DC5B1900F319'
            ,true
            ,true
            ,false
            ,NULL
-           ,"ROLE_USER"
+           ,'ROLE_USER'
            ,IdentityG
            ,true
            ,GETDATE())

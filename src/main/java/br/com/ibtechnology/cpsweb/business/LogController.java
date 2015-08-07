@@ -38,8 +38,6 @@ public class LogController implements ILogController {
 		
 		this.event = new EventEntity();
 		
-		this.messageResource = "user_login_" + level.name().toLowerCase() + "_" + msg.name().toLowerCase();
-		
 		this.message = createMessage(msg);
 			return false;
 	}

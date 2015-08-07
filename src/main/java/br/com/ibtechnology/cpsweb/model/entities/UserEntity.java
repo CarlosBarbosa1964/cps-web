@@ -5,16 +5,19 @@ import java.util.Date;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import br.com.ibtechnology.cpsweb.model.entities.BaseEntities;
+import br.com.ibtechnology.cpsweb.util.LogTraceListener;
 
 @Entity
 @Table(name="Users")
 @AttributeOverride(name = "id", column = @Column(name = "ID"))
+@EntityListeners(value = LogTraceListener.class)
 public class UserEntity extends BaseEntities<Long> {
 
 	private static final long serialVersionUID = 5244643112563217776L;

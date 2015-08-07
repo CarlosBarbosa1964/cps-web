@@ -6,6 +6,6 @@ import br.com.ibtechnology.cpsweb.model.enums.LevelLog;
 
 public interface ILogController {
 	
-	public boolean salvarEvtUser(UserEntity user, LevelLog level, KeywordLog message);
+	public boolean salvarEvtUser(UserEntity user, LevelLog level, KeywordLog msg);
 	
 }
