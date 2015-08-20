@@ -6,9 +6,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
+import javax.enterprise.context.SessionScoped;
 
-import org.springframework.context.annotation.Scope;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,18 +18,21 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.WebApplicationContext;
 
 import br.com.ibtechnology.cpsweb.model.entities.UserEntity;
 import br.com.ibtechnology.cpsweb.model.repositories.IUserRepository;
 
+import java.io.Serializable;
+
 @Controller
-@Scope(value = WebApplicationContext.SCOPE_SESSION)
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+@SessionScoped
+public class CustomAuthenticationProvider implements Serializable, AuthenticationProvider {
 
-	@Inject
+	private static final long serialVersionUID = 4995797368873634978L;
+	
+	@Autowired
 	private IUserRepository userRepository;
-
+	
 	public CustomAuthenticationProvider() {
 		super();
 	}
@@ -39,6 +42,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		String username = authentication.getName();
 		String password = authentication.getCredentials().toString();
 		String _password = "";
+		
+		
 		try {
 			_password = criptPass(password);
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
@@ -46,6 +51,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			e.printStackTrace();
 		}
 		System.out.println("-------------------------------");
+		System.out.println("CustomAuthenticationProvider");
 		System.out.println(username);
 		System.out.println(_password);
 		System.out.println("-------------------------------");
@@ -83,5 +89,4 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		String pass = hexString.toString();
 		return pass;
 	}
-
 }

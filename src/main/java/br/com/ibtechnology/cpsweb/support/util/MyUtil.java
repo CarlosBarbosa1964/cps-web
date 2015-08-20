@@ -4,15 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-
-import org.springframework.context.annotation.Scope;
-import org.springframework.web.context.WebApplicationContext;
 
 import br.com.ibtechnology.cpsweb.util.BaseBeans;
 
-@Scope(value = WebApplicationContext.SCOPE_SESSION)
 @Named(value = "myUtil")
+@SessionScoped
 public class MyUtil extends BaseBeans {
 	
 	private static final long serialVersionUID = 1195002574775522306L;

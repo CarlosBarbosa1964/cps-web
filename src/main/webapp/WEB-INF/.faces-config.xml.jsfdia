@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PROCESS model-entity="JSFProcess">
- <PROCESS-ITEM NAME="rules:#*" PATH="/*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+ <PROCESS-ITEM NAME="rules:#pages#admin#adminPage.cps"
+  PATH="/pages/admin/adminPage.cps" SHAPE="240,481,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#main.cps" PATH="/pages/main.cps"
+  SHAPE="240,145,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#successfulPage.cps"
+  PATH="/pages/successfulPage.cps" SHAPE="240,257,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#user#userPage.cps"
+  PATH="/pages/user/userPage.cps" SHAPE="240,369,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#*" PATH="/*" SHAPE="32,577,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#*:0" NAME="item" PATH="/*" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="loginPage::#login.cps" NAME="output"
-    PATH="/login.cps" TARGET="rules:#login.cps" TITLE="loginPage" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="index::#pages#main.cps" NAME="output"
+    PATH="/pages/main.cps" TARGET="rules:#pages#main.cps" TITLE="index" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:#login.cps" PATH="/login.cps"
-  SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#*:1" PATH="/*" SHAPE="32,689,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#*:1" NAME="item" PATH="/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="successfulPage::#pages#successfulPage.cps"
+    NAME="output" PATH="/pages/successfulPage.cps"
+    TARGET="rules:#pages#successfulPage.cps" TITLE="successfulPage" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#*:2" PATH="/*" SHAPE="32,801,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#*:2" NAME="item" PATH="/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="userPage::#pages#user#userPage.cps"
+    NAME="output" PATH="/pages/user/userPage.cps"
+    TARGET="rules:#pages#user#userPage.cps" TITLE="userPage" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#*:3" PATH="/*" SHAPE="32,465,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#*:3" NAME="item" PATH="/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="adminPage::#pages#admin#adminPage.cps"
+    NAME="output" PATH="/pages/admin/adminPage.cps"
+    TARGET="rules:#pages#admin#adminPage.cps" TITLE="adminPage" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
 </PROCESS>

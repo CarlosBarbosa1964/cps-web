@@ -10,10 +10,11 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.security.version>4.0.2.RELEASE</spring.security.version>
-		<spring.version>4.1.7.RELEASE</spring.version>
+		<spring.version>4.2.0.RELEASE</spring.version>
 	</properties>
 
 	<repositories>
+
 		<!-- MAVEN REPOSITORY -->
 		<repository>
 			<id>mvn-repository</id>
@@ -96,6 +97,7 @@
 	</repositories>
 
 	<dependencies>
+
 		<!-- JUNIT -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -169,9 +171,9 @@
 
 		<!-- JSF-IMPL - UTILIZADO PARA RODAR NO TOMCAT -->
 		<dependency>
-		<groupId>com.sun.faces</groupId>
-		<artifactId>jsf-impl</artifactId>
-		<version>2.2.9</version>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+			<version>2.2.9</version>
 		</dependency>
 
 		<!-- SPRING CONTEXT -->
@@ -227,7 +229,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.10.Final</version>
+			<version>4.3.11.Final</version>
 		</dependency>
 
 		<!-- SQL Server -->
@@ -240,7 +242,7 @@
 	</dependencies>
 
 	<build>
-<!-- 		<finalName>${project.name}-${project.version}</finalName> -->
+		<!-- <finalName>${project.name}-${project.version}</finalName> -->
 		<finalName>cps-web</finalName>
 
 		<plugins>

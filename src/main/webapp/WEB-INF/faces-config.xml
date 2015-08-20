@@ -20,13 +20,13 @@
 		</locale-config>
 	</application>
 
-	<navigation-rule>
-		<from-view-id>/*</from-view-id>
-		<navigation-case>
-			<from-outcome>loginPage</from-outcome>
-			<to-view-id>/login.cps</to-view-id>
-		</navigation-case>
-	</navigation-rule>
+<!-- 	<navigation-rule> -->
+<!-- 		<from-view-id>/*</from-view-id> -->
+<!-- 		<navigation-case> -->
+<!-- 			<from-outcome>loginPage</from-outcome> -->
+<!-- 			<to-view-id>/login.cps</to-view-id> -->
+<!-- 		</navigation-case> -->
+<!-- 	</navigation-rule> -->
 
 	<application>
 		<resource-bundle>
@@ -34,4 +34,41 @@
 			<var>messages</var>
 		</resource-bundle>
 	</application>
+	
+    <navigation-rule>
+    	<from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/pages/main.cps</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+ 
+    <navigation-rule>
+    	<from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>successfulPage</from-outcome>
+            <to-view-id>/pages/successfulPage.cps</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+ 
+    <navigation-rule>
+    	<from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>userPage</from-outcome>
+            <to-view-id>/pages/user/userPage.cps</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+ 
+    <navigation-rule>
+    	<from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>adminPage</from-outcome>
+            <to-view-id>/pages/admin/adminPage.cps</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
 </faces-config>

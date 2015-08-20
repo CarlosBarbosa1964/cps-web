@@ -13,6 +13,10 @@
 	background-image: url(../images/new_user.png);
 }
 
+.ui-state-default .icon-site {
+	background-image: url(../images/city-building-icon.png);
+}
+
 .ui-state-default .icon-edit-user {
 	background-image: url(../images/user_blue_edit.png);
 }

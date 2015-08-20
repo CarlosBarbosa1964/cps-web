@@ -12,25 +12,29 @@
 		<meta http-equiv="Pragma" content="no-cache" />
 		<meta http-equiv="Cache-Control" content="no-cache" />
 		<meta http-equiv="Expires" content="0" />
-		<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/images/icon.ico" />
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{request.contextPath}/resources/images/icon.ico" />
 		<title>Counter Parking Space for WEB :: IB Technology</title>
 	</h:head>
 
 	<h:body onload="document.content.dialog.login.username.focus();">
 		<div id="content" title="CPS Login">
-			<p:dialog header="#{labels.login_go}" id="dialog" modal="true"
+			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+			<p:dialog header="#{labels.login_go}" widgetVar="dlg" modal="true"
 				closable="false" position="center" showEffect="slide"
 				draggable="true" resizable="false" visible="true">
-				<form id="formLogin" action="login"
-					method='post'>
+				<h:form id="formLogin">
+					<h:messages />
 					<h:panelGrid columns="2" cellpadding="5">
 						<h:outputLabel for="username" value="#{labels.login_username}:" />
 						<p:inputText id="username" required="true"
-							label="#{labels.login_username}" />
+							label="#{labels.login_username}"
+							value="#{authenticator.username}" />
 
 						<h:outputLabel for="password" value="#{labels.login_password}:" />
 						<p:password id="password" required="true"
-							label="#{labels.login_password}" />
+							label="#{labels.login_password}"
+							value="#{authenticator.password}" />
 
 						<f:facet name="footer">
 							<c:if test="${param.erro == 'true'}">
@@ -40,11 +44,23 @@
 								<br />
 							</c:if>
 
-							<input name="submit" type="submit"
-								value="#{labels.login_action_go}" />
+							<p:commandButton value="#{labels.login_action_go}" update="growl"
+								actionListener="#{authenticator.login}" icon="icon-login" oncomplete="handleLoginRequest(xhr, status, args)" />
 						</f:facet>
 					</h:panelGrid>
-				</form>
+
+					<script type="text/javascript">
+					    function handleLoginRequest(xhr, status, args) {
+					        if(args.validationFailed || !args.loggedIn) {
+					            PF('dlg').jq.effect("shake", {times:5}, 100);
+					        }
+					        else {
+					            location.href = args.route;
+					        }
+					    }
+					</script>
+
+				</h:form>
 			</p:dialog>
 		</div>
 
