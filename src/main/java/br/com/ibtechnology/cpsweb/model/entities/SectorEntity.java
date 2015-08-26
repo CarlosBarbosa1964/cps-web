@@ -6,6 +6,7 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,8 +24,9 @@ public class SectorEntity extends BaseEntities<Long> {
 	@Column(nullable=false)
 	private String name;
 	
-	@Column(nullable=true)
-	private String desc;
+	@Lob
+	@Column(nullable=true, columnDefinition="TEXT")
+	private String description;
 	
 	@Column(nullable=false)
 	private int total_car_spaces;
@@ -51,12 +53,12 @@ public class SectorEntity extends BaseEntities<Long> {
 		
 	}
 
-	public SectorEntity(FloorEntity floor, String name, String desc, int total_car_spaces, int total_bike_spaces,
+	public SectorEntity(FloorEntity floor, String name, String description, int total_car_spaces, int total_bike_spaces,
 			int car_space_occupied, int bike_space_occupied, int car_traffic, int bike_traffic, Date last_update) {
 		super();
 		this.floor = floor;
 		this.name = name;
-		this.desc = desc;
+		this.description = description;
 		this.total_car_spaces = total_car_spaces;
 		this.total_bike_spaces = total_bike_spaces;
 		this.car_space_occupied = car_space_occupied;
@@ -82,12 +84,12 @@ public class SectorEntity extends BaseEntities<Long> {
 		this.name = name;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public int getTotal_car_spaces() {

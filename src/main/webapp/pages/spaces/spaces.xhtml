@@ -8,120 +8,147 @@
 	xmlns:p="http://primefaces.org/ui" template="../template.xhtml">
 
 	<ui:define name="content">
-		<f:view>
-			<f:event listener="#{spacesMB.onLoad}" type="preRenderView" />
-		</f:view>
-		<h:form>
-			<p:commandButton value="#{labels.button_add_site}"
-				update=":formCreate:dlgCreate"
-				oncomplete="PF('siteDlgCreate').show()" icon="ui-icon-plus"
-				title="#{labels.button_add_site}" />
-		</h:form>
+		<f:metadata>
+			<f:viewAction action="#{spacesController.onLoad}" />
+		</f:metadata>
+		<p:layout id="spaceLayout">
+			<p:layoutUnit position="west">
+				<h:form id="formData">
+					<p:growl id="msgs" showDetail="true" escape="false" />
 
-		<h:form id="form">
-			<p:growl id="msgs" showDetail="true" />
+					<h3 style="margin-top: 0">${labels.spaces}</h3>
+					<p:tree value="#{spacesController.root}" var="item"
+						selectionMode="single"
+						selection="#{spacesController.selectedNode}" dynamic="true">
 
-			<p:dataTable id="siteDataTable" widgetVar="dataTable" var="user"
-				loadingMessage="#{labels.user_load}" value="#{userMB.users}"
-				paginator="true" rows="10"
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,20" rowKey="#{user.id}"
-				selectionMode="single">
-				<f:facet name="header">${labels.users}</f:facet>
-				<p:column headerText="#{labels.user_id}" visible="false">
-					<h:outputText value="#{user.id}" />
-				</p:column>
-				<p:column headerText="#{labels.user_active}" width="35">
-					<h:selectBooleanCheckbox value="#{user.active}" disabled="true" />
-				</p:column>
-				<p:column headerText="#{labels.user_name}">
-					<h:outputText value="#{user.person.name}" />
-				</p:column>
-				<p:column headerText="#{labels.user_username}">
-					<h:outputText value="#{user.username}" />
-				</p:column>
-				<p:column headerText="#{labels.user_group}">
-					<h:outputText value="#{user.group.name}" />
-				</p:column>
-				<p:column style="width:7%;text-align: center">
-					<p:commandButton id="btnUpdate" update=":formUpdate:dlgUpdate"
-						oncomplete="PF('userDlgUpdate').show()" icon="ui-icon-pencil"
-						title="#{labels.button_update}">
-						<f:setPropertyActionListener value="#{user}"
-							target="#{userMB.selectedUser}" />
-					</p:commandButton>
-					<p:commandButton id="btnDelete" update=":formDelete:message"
-						oncomplete="PF('confirmDialog').show()" icon="ui-icon-trash"
-						title="#{labels.button_delete}">
-						<f:setPropertyActionListener value="#{user}"
-							target="#{userMB.selectedUser}" />
-					</p:commandButton>
-				</p:column>
-			</p:dataTable>
-		</h:form>
+						<p:ajax event="select" update=":formShowDetail, :formData:msgs"
+							listener="#{spacesController.onNodeSelect}" />
 
-		<!-- Form para Adição de novo Usuário -->
+						<p:treeNode type="site" expandedIcon="ui-icon-folder-open"
+							collapsedIcon="ui-icon-folder-collapsed">
+							<h:outputText value="#{item.name}" />
+						</p:treeNode>
+						<p:treeNode type="floor" expandedIcon="ui-icon-folder-open"
+							collapsedIcon="ui-icon-folder-collapsed">
+							<h:outputText value="#{item.name}" />
+						</p:treeNode>
+						<p:treeNode type="sector" expandedIcon="ui-icon-folder-open"
+							collapsedIcon="ui-icon-folder-collapsed">
+							<h:outputText value="#{item.name}" />
+						</p:treeNode>
+					</p:tree>
+				</h:form>
+			</p:layoutUnit>
 
-		<h:form id="formCreate">
-			<p:dialog header="#{labels.user_add}" widgetVar="userDlgCreate"
-				modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-				<p:outputPanel id="dlgCreate" style="text-align:center;">
-					<p:panelGrid columns="2" columnClasses="label,value">
+			<p:layoutUnit position="center">
+				<h:form id="formShowDetail">
+					<p:panel visible="#{spacesController.visibleDetailSite}">
+						<p:panelGrid columns="2" var="site">
+							<f:facet name="header">${labels.site}</f:facet>
+							<h:outputText value="#{labels.site_id} :" />
+							<h:outputText value="#{spacesController.selectedSite.id}" />
 
-						<h:outputText value="#{labels.user_name}:" />
-						<p:inputText value="#{userMB.selectedUser.person.name}" />
+							<h:outputText value="#{labels.site_name} :" />
+							<h:outputText value="#{spacesController.selectedSite.name}" />
 
-						<h:outputText value="#{labels.user_username}" />
-						<p:inputText value="#{userMB.selectedUser.username}" />
+							<h:outputText value="#{labels.site_description} :" />
+							<h:outputText
+								value="#{spacesController.selectedSite.description}" />
+							<f:facet name="footer">
+								<h:inputHidden value="#{spacesController.selectedSite.id}" />
+								<p:separator />
 
-						<h:outputText value="#{labels.user_group}" />
-						<p:inputText value="#{userMB.selectedUser.group.name}" />
-					</p:panelGrid>
-				</p:outputPanel>
-			</p:dialog>
-		</h:form>
+								<p:commandButton id="btnUpdate"
+									update=":formUpdate:dlgUpdateSite"
+									oncomplete="PF('dlgUpdateSite').show()" icon="ui-icon-pencil"
+									title="#{labels.button_update}" value="#{labels.button_update}"
+									actionListener="#{spacesController.displaySelectedSite}">
+								</p:commandButton>
 
-		<!-- Form para Edição do usuário selecionado -->
+								<p:commandButton id="btnDelete" update=":formDelete:message"
+									oncomplete="PF('confirmDialog').show()" icon="ui-icon-trash"
+									title="#{labels.button_delete}" value="#{labels.button_delete}">
+									<f:setPropertyActionListener value="#{site}"
+										target="#{spacesController.selectedSite}" />
+								</p:commandButton>
+							</f:facet>
+						</p:panelGrid>
+					</p:panel>
+				</h:form>
+			</p:layoutUnit>
+		</p:layout>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- #	Form para Edição do item selecionado	# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
 		<h:form id="formUpdate">
-			<p:dialog header="#{labels.user_update}" widgetVar="userDlgUpdate"
-				modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-				<p:outputPanel id="dlgUpdate" style="text-align:center;">
-					<p:panelGrid columns="2"
-						rendered="#{not empty userMB.selectedUser}"
-						columnClasses="label,value">
+			<p:dialog header="#{labels.site_update}" widgetVar="dlgUpdateSite"
+				modal="true" showEffect="fade" hideEffect="explode"
+				resizable="false">
+				<p:outputPanel id="dlgUpdateSite" style="text-align:center;">
+					<p:panelGrid columns="2">
+						<h:outputText value="#{labels.site_name}:" />
+						<p:inputText value="#{spacesController.selectedSite.name}" />
 
-						<h:outputText value="#{labels.user_id}:" />
-						<h:outputText value="#{userMB.selectedUser.id}" />
-
-						<h:outputText value="#{labels.user_name}:" />
-						<h:outputText value="#{userMB.selectedUser.person.name}" />
-
-						<h:outputText value="#{labels.user_username}" />
-						<h:outputText value="#{userMB.selectedUser.username}" />
-
-						<h:outputText value="#{labels.user_group}" />
-						<h:outputText value="#{userMB.selectedUser.group.name}" />
+						<h:outputText value="#{labels.site_description}" />
+						<p:inputText value="#{spacesController.selectedSite.description}" />
+						<f:facet name="footer">
+							<h:inputHidden value="#{spacesController.selectedSite.id}" />
+							<p:separator />
+							<p:commandButton id="btnUpdateSave"
+								update=":formData, :formData:msgs, :formShowDetail"
+								actionListener="#{spacesController.updateSite}"
+								oncomplete="handleUpdateRequest(xhr, status, args)"
+								icon="ui-icon-disk" title="#{labels.button_save}"
+								value="#{labels.button_save}" />
+							<p:commandButton id="btnUpdateCancel"
+								oncomplete="PF('dlgUpdateSite').hide()" icon="ui-icon-cancel"
+								title="#{labels.button_cancel}" value="#{labels.button_cancel}" />
+						</f:facet>
 					</p:panelGrid>
 				</p:outputPanel>
 			</p:dialog>
 		</h:form>
-		<!-- Form para Adição de novo Usuário -->
+		<script type="text/javascript">
+    function handleUpdateRequest(xhr, status, args) {
+        if(!args.saved) {
+            PF('dlgUpdateSite').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('dlgUpdateSite').hide();
+        }
+    }
+</script>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #	Form para exclusão do item selecionado	# -->
+		<!-- #			  Requer confirmação			# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
 
 		<h:form id="formDelete">
 			<p:growl id="message" showDetail="true" />
 
 			<p:confirmDialog id="confirmDialog" widgetVar="confirmDialog"
 				header="#{labels.button_delete}"
-				message="#{labels.user_confirm_delete}" icon="ui-icon-alert"
+				message="#{labels.site_confirm_delete}" icon="ui-icon-alert"
 				showEffect="fade" hideEffect="fade">
 				<p:commandButton value="#{labels.button_yes}"
-					actionListener="#{userMB.delete}"
-					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update="message"
+					actionListener="#{spacesController.delete}"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					update=":formData, :formData:msgs, :formShowDetail"
 					oncomplete="PF('confirmDialog').hide();" />
 				<p:commandButton value="#{labels.button_no}" type="button"
 					styleClass="ui-confirmdialog-no"
 					onclick="PF('confirmDialog').hide();" icon="ui-icon-close" />
 			</p:confirmDialog>
 		</h:form>
+
 	</ui:define>
 </ui:composition>

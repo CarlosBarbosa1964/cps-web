@@ -7,6 +7,7 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -21,17 +22,17 @@ public class FloorEntity extends BaseEntities<Long> {
 	private static final long serialVersionUID = -5422297458121649602L;
 
 	@Column(nullable = false)
-	private String name;
+	private String name; 
 
 	@Lob
-	@Column(nullable = true)
-	private String desc;
+	@Column(nullable=true, columnDefinition="TEXT")
+	private String description;
 
 	@ManyToOne
 	@JoinColumn(name = "siteID", nullable = false)
 	private SiteEntity site;
 
-	@OneToMany(mappedBy = "floor", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "floor", cascade = CascadeType.ALL)
 	private List<SectorEntity> sectors;
 
 	@Column(nullable = false)
@@ -41,10 +42,10 @@ public class FloorEntity extends BaseEntities<Long> {
 
 	}
 
-	public FloorEntity(String name, String desc, SiteEntity site, List<SectorEntity> sectors, Date last_update) {
+	public FloorEntity(String name, String description, SiteEntity site, List<SectorEntity> sectors, Date last_update) {
 		super();
 		this.name = name;
-		this.desc = desc;
+		this.description = description;
 		this.site = site;
 		this.sectors = sectors;
 		this.last_update = last_update;
@@ -58,12 +59,12 @@ public class FloorEntity extends BaseEntities<Long> {
 		this.name = name;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public SiteEntity getSite() {
@@ -80,6 +81,14 @@ public class FloorEntity extends BaseEntities<Long> {
 
 	public void setSectors(List<SectorEntity> sectors) {
 		this.sectors = sectors;
+	}
+
+	public Date getLast_update() {
+		return last_update;
+	}
+
+	public void setLast_update(Date last_update) {
+		this.last_update = last_update;
 	}
 
 }

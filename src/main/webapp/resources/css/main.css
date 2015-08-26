@@ -13,8 +13,8 @@
 	background-image: url(../images/new_user.png);
 }
 
-.ui-state-default .icon-site {
-	background-image: url(../images/city-building-icon.png);
+.icon-site {
+	background-image: url(../images/city-building-icon.png) !important;
 }
 
 .ui-state-default .icon-edit-user {
@@ -69,4 +69,16 @@ html, body {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
+}
+
+#spaceLayout {
+	height: auto
+}
+
+#statusDialog {
+	width: 64px;
+	height: 64px;
+	position: fixed;
+	right: 5px;
+	bottom: 5px
 }

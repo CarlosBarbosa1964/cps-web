@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,13 +22,17 @@ public class SiteEntity extends BaseEntities<Long> {
 	private String name;
 	
 	@Lob
-	@Column(nullable=true)
-	private String desc;
+	@Column(nullable=true, columnDefinition="TEXT")
+	private String description;
 	
-	@Column(nullable=true)
-	private Address address;
+	//private Address address;
+	private String street;
+	private String district;
+	private String city;
+	private String state;
+	private String zipcode;
 	
-	@OneToMany(mappedBy="site", cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="site")
 	private List<FloorEntity> floors;
 	
 	@Column(nullable=false)
@@ -39,23 +43,78 @@ public class SiteEntity extends BaseEntities<Long> {
 	}
 	
 
-	public SiteEntity(String name, String desc, Address address, List<FloorEntity> floors, Date last_update) {
+	public SiteEntity(String name, String description, String street, String district, String city, String state,
+			String zipcode, List<FloorEntity> floors, Date last_update) {
 		super();
 		this.name = name;
-		this.desc = desc;
-		this.address = address;
+		this.description = description;
+		this.street = street;
+		this.district = district;
+		this.city = city;
+		this.state = state;
+		this.zipcode = zipcode;
 		this.floors = floors;
 		this.last_update = last_update;
 	}
 
 
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
 
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public String getStreet() {
+		return street;
+	}
+
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+
+	public String getDistrict() {
+		return district;
+	}
+
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+
+	public String getCity() {
+		return city;
+	}
+
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+
+	public String getState() {
+		return state;
+	}
+
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
 	}
 
 
@@ -75,14 +134,6 @@ public class SiteEntity extends BaseEntities<Long> {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
 	}
 
 	public Date getLast_update() {

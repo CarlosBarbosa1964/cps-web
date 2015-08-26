@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="../template.xhtml">
+
+	<ui:define name="content">
+		<h:form>
+			<p:commandButton value="#{labels.button_add_site}"
+				update=":formCreateSite:dlgCreateSite"
+				oncomplete="PF('dlgCreateSite').show()" icon="ui-icon-plus"
+				title="#{labels.button_add_site}" />
+		</h:form>
+
+		<p:growl id="msgs" showDetail="true" />
+
+		<h:form id="formDataTable">
+
+			<p:dataTable id="siteDataTable" widgetVar="dataTable" var="site"
+				loadingMessage="#{labels.site_load}"
+				value="#{spacesController.sites}" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,20">
+				<f:facet name="header">${labels.sites}</f:facet>
+				<p:column style="width:16px">
+					<p:rowToggler />
+				</p:column>
+				<p:column headerText="#{labels.site_id}" visible="false">
+					<h:outputText value="#{site.id}" />
+				</p:column>
+				<p:column headerText="#{labels.site_name}">
+					<h:outputText value="#{site.name}" />
+				</p:column>
+				<p:column headerText="#{labels.site_description}">
+					<h:outputText value="#{site.description}" />
+				</p:column>
+				<p:column style="width:7%;text-align: center">
+					<p:commandButton id="btnUpdate" update=":formUpdate:dlgUpdateSite"
+						oncomplete="PF('dlgUpdateSite').show()" icon="ui-icon-pencil"
+						title="#{labels.button_update}">
+						<f:setPropertyActionListener value="#{site}"
+							target="#{spacesController.selectedSite}" />
+					</p:commandButton>
+					<p:commandButton id="btnDelete" update=":formDelete:message"
+						oncomplete="PF('confirmDialog').show()" icon="ui-icon-trash"
+						title="#{labels.button_delete}">
+						<f:setPropertyActionListener value="#{site}"
+							target="#{spacesController.selectedSite}" />
+					</p:commandButton>
+				</p:column>
+				<p:rowExpansion>
+					<p:dataTable var="floor" value="#{site.floors}">
+						<f:facet name="header">${labels.sites}</f:facet>
+						<p:column headerText="Id">
+							<h:outputText value="#{floor.id}" />
+						</p:column>
+						<p:column headerText="Year">
+							<h:outputText value="#{floor.name}" />
+						</p:column>
+					</p:dataTable>
+				</p:rowExpansion>
+			</p:dataTable>
+		</h:form>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- #		Form para Adição do novo item 		# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
+
+		<h:form id="formCreateSite">
+			<p:dialog header="#{labels.site_add}" widgetVar="dlgCreateSite"
+				modal="true" showEffect="fade" hideEffect="explode"
+				resizable="false">
+				<p:outputPanel id="dlgCreateSite" style="text-align:center;">
+					<p:panelGrid columns="2">
+
+						<p:outputLabel for="name" value="#{labels.site_name}:" />
+						<p:inputText id="name" value="#{spacesController.newSite.name}"
+							required="true" />
+
+						<h:outputText value="#{labels.site_description}" />
+						<p:inputText value="#{spacesController.newSite.description}" />
+						<f:facet name="footer">
+							<p:separator />
+							<p:commandButton id="btnCreateSave"
+								update=":formDataTable, :msgs"
+								actionListener="#{spacesController.saveSite}"
+								oncomplete="handleCreateRequest(xhr, status, args)"
+								icon="ui-icon-disk" title="#{labels.button_save}"
+								value="#{labels.button_save}" />
+							<p:commandButton id="btnCreateCancel"
+								actionListener="#{spacesController.prepareNewSite}"
+								oncomplete="PF('dlgCreateSite').hide()" icon="ui-icon-cancel"
+								title="#{labels.button_cancel}" value="#{labels.button_cancel}" />
+						</f:facet>
+
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<script type="text/javascript">
+    function handleCreateRequest(xhr, status, args) {
+        if(!args.saved) {
+            PF('dlgCreateSite').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('dlgCreateSite').hide();
+        }
+    }
+</script>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- #	Form para Edição do item selecionado	# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
+		<h:form id="formUpdate">
+			<p:dialog header="#{labels.site_update}" widgetVar="dlgUpdateSite"
+				modal="true" showEffect="fade" hideEffect="explode"
+				resizable="false">
+				<p:outputPanel id="dlgUpdateSite" style="text-align:center;">
+					<p:panelGrid columns="2">
+						<h:outputText value="#{labels.site_name}:" />
+						<p:inputText value="#{spacesController.selectedSite.name}" />
+
+						<h:outputText value="#{labels.site_description}" />
+						<p:inputText value="#{spacesController.selectedSite.description}" />
+						<f:facet name="footer">
+							<h:inputHidden value="#{spacesController.selectedSite.id}" />
+							<p:separator />
+							<p:commandButton id="btnUpdateSave"
+								update=":formDataTable, :msgs"
+								actionListener="#{spacesController.updateSite}"
+								oncomplete="handleUpdateRequest(xhr, status, args)"
+								icon="ui-icon-disk" title="#{labels.button_save}"
+								value="#{labels.button_save}" />
+							<p:commandButton id="btnUpdateCancel"
+								oncomplete="PF('dlgUpdateSite').hide()" icon="ui-icon-cancel"
+								title="#{labels.button_cancel}" value="#{labels.button_cancel}" />
+						</f:facet>
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<script type="text/javascript">
+    function handleUpdateRequest(xhr, status, args) {
+        if(!args.saved) {
+            PF('dlgUpdateSite').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('dlgUpdateSite').hide();
+        }
+    }
+</script>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #	Form para exclusão do item selecionado	# -->
+		<!-- #			  Requer confirmação			# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
+
+		<h:form id="formDelete">
+			<p:growl id="message" showDetail="true" />
+
+			<p:confirmDialog id="confirmDialog" widgetVar="confirmDialog"
+				header="#{labels.button_delete}"
+				message="#{labels.site_confirm_delete}" icon="ui-icon-alert"
+				showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{labels.button_yes}"
+					actionListener="#{spacesController.delete}"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					update=":formDataTable, :msgs"
+					oncomplete="PF('confirmDialog').hide();" />
+				<p:commandButton value="#{labels.button_no}" type="button"
+					styleClass="ui-confirmdialog-no"
+					onclick="PF('confirmDialog').hide();" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
