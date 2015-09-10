@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formCreateFloor">
+		<p:dialog header="#{labels.floor_add}" widgetVar="dlgCreateFloor"
+			modal="true" showEffect="fade" hideEffect="explode" resizable="false">
+
+			<p:outputPanel id="dlgCreateFloor" style="text-align:center;">
+				<p:panelGrid columns="2">
+
+					<p:outputLabel for="site" value="#{labels.site_name}:" />
+					<p:selectOneMenu id="site" value="#{spacesController.newFloor.site.id}" effect="fade">
+						<f:selectItem itemLabel="#{labels.site_select}" itemValue="0"
+							noSelectionOption="true" />
+						<f:selectItems value="#{spacesController.selectOneSite}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="name" value="#{labels.floor_name}:" />
+					<p:inputText id="name" value="#{spacesController.newFloor.name}" />
+
+					<h:outputText value="#{labels.floor_description}" />
+					<p:inputText value="#{spacesController.newFloor.description}" />
+					<f:facet name="footer">
+						<p:separator />
+						<p:commandButton id="btnCreateSaveFloor"
+							update=":formData, :formData:msgs, :formShowDetail"
+							actionListener="#{spacesController.saveFloor}"
+							oncomplete="handleCreateFloorRequest(xhr, status, args)"
+							icon="ui-icon-disk" title="#{labels.button_save}"
+							value="#{labels.button_save}" />
+						<p:commandButton id="btnCreateCancelFloor"
+							actionListener="#{spacesController.prepareNewFloor}"
+							oncomplete="PF('dlgCreateFloor').hide()" icon="ui-icon-cancel"
+							title="#{labels.button_cancel}" value="#{labels.button_cancel}" />
+					</f:facet>
+
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+	</h:form>
+	<script type="text/javascript">
+	    function handleCreateFloorRequest(xhr, status, args) {
+	        if(!args.saved) {
+	            PF('dlgCreateFloor').jq.effect("shake", {times:5}, 100);
+	        }
+	        else {
+	            PF('dlgCreateFloor').hide();
+	        }
+	    }
+	</script>
+</ui:composition>

@@ -12,3 +12,11 @@ body {
 .ui-state-default .icon-login {
 	background-image: url(../images/login_16x16.png);
 }
+
+#statusDialog {
+	width: 64px;
+	height: 64px;
+	position: fixed;
+	right: 5px;
+	bottom: 5px
+}

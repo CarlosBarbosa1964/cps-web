@@ -6,10 +6,13 @@ import java.util.List;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import br.com.ibtechnology.cpsweb.util.LogTraceListener;
 
 @Entity
 @Table(name="Sites")

@@ -2,6 +2,7 @@ package br.com.ibtechnology.cpsweb.util;
 
 import java.util.Date;
 
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.PostPersist;
@@ -20,13 +21,13 @@ import br.com.ibtechnology.cpsweb.model.entities.UserEntity;
 import br.com.ibtechnology.cpsweb.model.enums.TransactionType;
 import br.com.ibtechnology.cpsweb.model.repositories.IlogTraceRepository;
 
-@Scope(value = WebApplicationContext.SCOPE_SESSION)
 @Named(value = "logTraceListener")
+@SessionScoped
 public class LogTraceListener extends BaseBeans {
 
 	private static final long serialVersionUID = -5191719517008349116L;
 
-	@Inject
+	@Autowired
     IlogTraceRepository logTraceService;
 
 	@Autowired

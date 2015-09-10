@@ -21,7 +21,7 @@
 						selectionMode="single"
 						selection="#{spacesController.selectedNode}" dynamic="true">
 
-						<p:ajax event="select" update=":formShowDetail, :formData:msgs"
+						<p:ajax event="select" update=":formData, :formShowDetail, :formData:msgs"
 							listener="#{spacesController.onNodeSelect}" />
 
 						<p:treeNode type="site" expandedIcon="ui-icon-folder-open"
@@ -37,12 +37,23 @@
 							<h:outputText value="#{item.name}" />
 						</p:treeNode>
 					</p:tree>
+					<p:separator />
+					<p:menuButton value="#{labels.button_add}" icon="ui-icon-plus">
+						<p:menuitem value="#{labels.site}"
+							oncomplete="PF('dlgCreateSite').show()"
+							update=":formCreateSite:dlgCreateSite" icon="icon-site" />
+						<p:menuitem value="#{labels.floor}" oncomplete="PF('dlgCreateFloor').show()" actionListener="#{spacesController.prepareNewFloor}"
+							update=":formCreateFloor:dlgCreateFloor" disabled="spacesController.EnButtonAddFloor" />
+						<p:menuitem value="#{labels.sector}" disabled="spacesController.EnButtonAddSector" />
+					</p:menuButton>
 				</h:form>
 			</p:layoutUnit>
 
 			<p:layoutUnit position="center">
 				<h:form id="formShowDetail">
-					<p:panel visible="#{spacesController.visibleDetailSite}">
+					<p:panel id="panelDetailSite"
+						visible="#{spacesController.visibleDetailSite}"
+						style="border-style: none">
 						<p:panelGrid columns="2" var="site">
 							<f:facet name="header">${labels.site}</f:facet>
 							<h:outputText value="#{labels.site_id} :" />
@@ -62,15 +73,12 @@
 									update=":formUpdate:dlgUpdateSite"
 									oncomplete="PF('dlgUpdateSite').show()" icon="ui-icon-pencil"
 									title="#{labels.button_update}" value="#{labels.button_update}"
-									actionListener="#{spacesController.displaySelectedSite}">
-								</p:commandButton>
+									actionListener="#{spacesController.displaySelectedSite}" />
 
 								<p:commandButton id="btnDelete" update=":formDelete:message"
 									oncomplete="PF('confirmDialog').show()" icon="ui-icon-trash"
-									title="#{labels.button_delete}" value="#{labels.button_delete}">
-									<f:setPropertyActionListener value="#{site}"
-										target="#{spacesController.selectedSite}" />
-								</p:commandButton>
+									title="#{labels.button_delete}" value="#{labels.button_delete}"
+									actionListener="#{spacesController.displaySelectedSite}" />
 							</f:facet>
 						</p:panelGrid>
 					</p:panel>
@@ -78,77 +86,18 @@
 			</p:layoutUnit>
 		</p:layout>
 
-		<!-- ############################################ -->
-		<!-- #											# -->
-		<!-- #											# -->
-		<!-- #	Form para Edição do item selecionado	# -->
-		<!-- #											# -->
-		<!-- #											# -->
-		<!-- ############################################ -->
-		<h:form id="formUpdate">
-			<p:dialog header="#{labels.site_update}" widgetVar="dlgUpdateSite"
-				modal="true" showEffect="fade" hideEffect="explode"
-				resizable="false">
-				<p:outputPanel id="dlgUpdateSite" style="text-align:center;">
-					<p:panelGrid columns="2">
-						<h:outputText value="#{labels.site_name}:" />
-						<p:inputText value="#{spacesController.selectedSite.name}" />
-
-						<h:outputText value="#{labels.site_description}" />
-						<p:inputText value="#{spacesController.selectedSite.description}" />
-						<f:facet name="footer">
-							<h:inputHidden value="#{spacesController.selectedSite.id}" />
-							<p:separator />
-							<p:commandButton id="btnUpdateSave"
-								update=":formData, :formData:msgs, :formShowDetail"
-								actionListener="#{spacesController.updateSite}"
-								oncomplete="handleUpdateRequest(xhr, status, args)"
-								icon="ui-icon-disk" title="#{labels.button_save}"
-								value="#{labels.button_save}" />
-							<p:commandButton id="btnUpdateCancel"
-								oncomplete="PF('dlgUpdateSite').hide()" icon="ui-icon-cancel"
-								title="#{labels.button_cancel}" value="#{labels.button_cancel}" />
-						</f:facet>
-					</p:panelGrid>
-				</p:outputPanel>
-			</p:dialog>
-		</h:form>
-		<script type="text/javascript">
-    function handleUpdateRequest(xhr, status, args) {
-        if(!args.saved) {
-            PF('dlgUpdateSite').jq.effect("shake", {times:5}, 100);
-        }
-        else {
-            PF('dlgUpdateSite').hide();
-        }
-    }
-</script>
+		<ui:include src="floor.xhtml" />
 
 		<!-- ############################################ -->
 		<!-- #											# -->
-		<!-- #	Form para exclusão do item selecionado	# -->
-		<!-- #			  Requer confirmação			# -->
+		<!-- #											# -->
+		<!-- #		Form para Adição do novo item 		# -->
 		<!-- #											# -->
 		<!-- #											# -->
 		<!-- ############################################ -->
 
-		<h:form id="formDelete">
-			<p:growl id="message" showDetail="true" />
 
-			<p:confirmDialog id="confirmDialog" widgetVar="confirmDialog"
-				header="#{labels.button_delete}"
-				message="#{labels.site_confirm_delete}" icon="ui-icon-alert"
-				showEffect="fade" hideEffect="fade">
-				<p:commandButton value="#{labels.button_yes}"
-					actionListener="#{spacesController.delete}"
-					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
-					update=":formData, :formData:msgs, :formShowDetail"
-					oncomplete="PF('confirmDialog').hide();" />
-				<p:commandButton value="#{labels.button_no}" type="button"
-					styleClass="ui-confirmdialog-no"
-					onclick="PF('confirmDialog').hide();" icon="ui-icon-close" />
-			</p:confirmDialog>
-		</h:form>
+		<ui:include src="sites.xhtml" />
 
 	</ui:define>
 </ui:composition>

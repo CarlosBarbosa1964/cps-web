@@ -34,17 +34,11 @@
 				<ui:include src="footer.xhtml" />
 			</div>
 		</div>
-		<div id="statusDialog">
-			<p:ajaxStatus onstart="PF('statusDialog').show()"
-				onsuccess="PF('statusDialog').hide()" />
-
-			<p:dialog widgetVar="statusDialog" draggable="false"
-				closable="false" resizable="false" showHeader="false">
-				<img id="load"
-					src="#{request.contextPath}/resources/images/loader.gif"
-					alt="" />
-			</p:dialog>
-		</div>
+			<p:ajaxStatus onstart="show('statusDialog')"
+				onsuccess="hide('statusDialog')" />
+			<div id="statusDialog" style="display:none">
+				<img src="#{request.contextPath}/resources/images/loader.gif" />
+			</div>
 	</h:body>
 </f:view>
 </html>

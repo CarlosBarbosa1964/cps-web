@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+		<h:form id="formCreateSite">
+			<p:dialog header="#{labels.site_add}" widgetVar="dlgCreateSite"
+				modal="true" showEffect="fade" hideEffect="explode"
+				resizable="false" focus="name">
+				<p:outputPanel id="dlgCreateSite" style="text-align:center;">
+					<p:panelGrid columns="2">
+
+						<p:outputLabel for="name" value="#{labels.site_name}:" />
+						<p:inputText id="name" value="#{spacesController.newSite.name}" />
+
+						<h:outputText value="#{labels.site_description}" />
+						<p:inputText value="#{spacesController.newSite.description}" />
+						<f:facet name="footer">
+							<p:separator />
+							<p:commandButton id="btnCreateSave"
+								update=":formData, :formData:msgs, :formShowDetail"
+								actionListener="#{spacesController.saveSite}"
+								oncomplete="handleCreateRequest(xhr, status, args)"
+								icon="ui-icon-disk" title="#{labels.button_save}"
+								value="#{labels.button_save}" />
+							<p:commandButton id="btnCreateCancel"
+								actionListener="#{spacesController.prepareNewSite}"
+								oncomplete="PF('dlgCreateSite').hide()" icon="ui-icon-cancel"
+								title="#{labels.button_cancel}" value="#{labels.button_cancel}" />
+						</f:facet>
+
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+<script type="text/javascript">
+    function handleCreateRequest(xhr, status, args) {
+        if(!args.saved) {
+            PF('dlgCreateSite').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('dlgCreateSite').hide();
+        }
+    }
+</script>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- #	Form para Edição do item selecionado	# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
+		<h:form id="formUpdate">
+			<p:dialog header="#{labels.site_update}" widgetVar="dlgUpdateSite"
+				modal="true" showEffect="fade" hideEffect="explode"
+				resizable="false" focus="name">
+				<p:outputPanel id="dlgUpdateSite" style="text-align:center;">
+					<p:panelGrid columns="2">
+						<h:outputText for="name" value="#{labels.site_name}:" />
+						<p:inputText id="name" value="#{spacesController.selectedSite.name}" />
+
+						<h:outputText value="#{labels.site_description}" />
+						<p:inputText value="#{spacesController.selectedSite.description}" />
+						<f:facet name="footer">
+							<h:inputHidden value="#{spacesController.selectedSite.id}" />
+							<p:separator />
+							<p:commandButton id="btnUpdateSave"
+								update=":formData, :formData:msgs, :formShowDetail"
+								actionListener="#{spacesController.updateSite}"
+								oncomplete="handleUpdateRequest(xhr, status, args)"
+								icon="ui-icon-disk" title="#{labels.button_save}"
+								value="#{labels.button_save}" />
+							<p:commandButton id="btnUpdateCancel"
+								oncomplete="PF('dlgUpdateSite').hide()" icon="ui-icon-cancel"
+								title="#{labels.button_cancel}" value="#{labels.button_cancel}" />
+						</f:facet>
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<script type="text/javascript">
+    function handleUpdateRequest(xhr, status, args) {
+        if(!args.saved) {
+            PF('dlgUpdateSite').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('dlgUpdateSite').hide();
+        }
+    }
+</script>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #	Form para exclusão do item selecionado	# -->
+		<!-- #			  Requer confirmação			# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
+
+		<h:form id="formDelete">
+			<p:growl id="message" showDetail="true" />
+
+			<p:confirmDialog id="confirmDialog" widgetVar="confirmDialog"
+				header="#{labels.button_delete}"
+				message="#{labels.site_confirm_delete}" icon="ui-icon-alert"
+				showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{labels.button_yes}"
+					actionListener="#{spacesController.delete}"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					update=":formData, :formData:msgs, :formShowDetail"
+					oncomplete="PF('confirmDialog').hide();" />
+				<p:commandButton value="#{labels.button_no}" type="button"
+					styleClass="ui-confirmdialog-no"
+					onclick="PF('confirmDialog').hide();" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</h:form>
+</ui:composition>
