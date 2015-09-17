@@ -20,9 +20,9 @@
 						<f:facet name="footer">
 							<p:separator />
 							<p:commandButton id="btnCreateSave"
-								update=":formData, :formData:msgs, :formShowDetail"
+								update=":formUpdate:dlgUpdateSite, :formData, :formData:msgs, :formShowDetail"
 								actionListener="#{spacesController.saveSite}"
-								oncomplete="handleCreateRequest(xhr, status, args)"
+								oncomplete="validateForm(xhr, status, args, 'formCreateSite', 'dlgCreateSite')"
 								icon="ui-icon-disk" title="#{labels.button_save}"
 								value="#{labels.button_save}" />
 							<p:commandButton id="btnCreateCancel"
@@ -35,16 +35,6 @@
 				</p:outputPanel>
 			</p:dialog>
 		</h:form>
-<script type="text/javascript">
-    function handleCreateRequest(xhr, status, args) {
-        if(!args.saved) {
-            PF('dlgCreateSite').jq.effect("shake", {times:5}, 100);
-        }
-        else {
-            PF('dlgCreateSite').hide();
-        }
-    }
-</script>
 
 		<!-- ############################################ -->
 		<!-- #											# -->
@@ -68,9 +58,9 @@
 							<h:inputHidden value="#{spacesController.selectedSite.id}" />
 							<p:separator />
 							<p:commandButton id="btnUpdateSave"
-								update=":formData, :formData:msgs, :formShowDetail"
+								update=":formUpdate:dlgUpdateSite, :formData, :formData:msgs, :formShowDetail"
 								actionListener="#{spacesController.updateSite}"
-								oncomplete="handleUpdateRequest(xhr, status, args)"
+								oncomplete="validateForm(xhr, status, args, 'formUpdate', 'dlgUpdateSite')"
 								icon="ui-icon-disk" title="#{labels.button_save}"
 								value="#{labels.button_save}" />
 							<p:commandButton id="btnUpdateCancel"
@@ -108,7 +98,7 @@
 				message="#{labels.site_confirm_delete}" icon="ui-icon-alert"
 				showEffect="fade" hideEffect="fade">
 				<p:commandButton value="#{labels.button_yes}"
-					actionListener="#{spacesController.delete}"
+					actionListener="#{spacesController.deleteSite}"
 					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
 					update=":formData, :formData:msgs, :formShowDetail"
 					oncomplete="PF('confirmDialog').hide();" />

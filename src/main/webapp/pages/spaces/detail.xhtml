@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<!-- ############ 
+			 #			# 
+			 #	SITE	# 
+			 #			#
+			 ############ -->
+
+	<h:form id="formShowDetail">
+		<p:panel id="panelDetailSite"
+			visible="#{spacesController.visibleDetailSite}"
+			style="border-style: none">
+			<p:panelGrid columns="2" var="site">
+				<f:facet name="header">${labels.site}</f:facet>
+				<h:outputText value="#{labels.site_id} :" />
+				<h:outputText value="#{spacesController.selectedSite.id}" />
+
+				<h:outputText value="#{labels.site_name} :" />
+				<h:outputText value="#{spacesController.selectedSite.name}" />
+
+				<h:outputText value="#{labels.site_description} :" />
+				<h:outputText value="#{spacesController.selectedSite.description}" />
+				<f:facet name="footer">
+					<h:inputHidden value="#{spacesController.selectedSite.id}" />
+					<p:separator />
+
+					<p:commandButton id="btnUpdate" update=":formUpdate:dlgUpdateSite"
+						oncomplete="PF('dlgUpdateSite').show()" icon="ui-icon-pencil"
+						title="#{labels.button_update}" value="#{labels.button_update}"
+						actionListener="#{spacesController.displaySelectedSite}" />
+
+					<p:commandButton id="btnDelete" update=":formDelete:message"
+						oncomplete="PF('confirmDialog').show()" icon="ui-icon-trash"
+						title="#{labels.button_delete}" value="#{labels.button_delete}"
+						actionListener="#{spacesController.displaySelectedSite}" />
+				</f:facet>
+			</p:panelGrid>
+		</p:panel>
+
+		<!-- ############ 
+			 #			# 
+			 #	ANDAR	# 
+			 #			#
+			 ############ -->
+
+		<p:panel id="panelDetailFloor"
+			visible="#{spacesController.visibleDetailFloor}"
+			style="border-style: none">
+			<p:panelGrid columns="2" var="floor">
+				<f:facet name="header">${labels.floor}</f:facet>
+				<h:outputText value="#{labels.floor_id} :" />
+				<h:outputText value="#{spacesController.selectedFloor.id}" />
+
+				<h:outputText value="#{labels.site} :" />
+				<h:outputText value="#{spacesController.selectedFloor.site.name}" />
+
+				<h:outputText value="#{labels.floor_name} :" />
+				<h:outputText value="#{spacesController.selectedFloor.name}" />
+
+				<h:outputText value="#{labels.floor_description} :" />
+				<h:outputText value="#{spacesController.selectedFloor.description}" />
+				<f:facet name="footer">
+					<h:inputHidden value="#{spacesController.selectedFloor.id}" />
+					<p:separator />
+
+					<p:commandButton id="btnUpdateFloor"
+						update=":formUpdateFloor:dlgUpdateFloor"
+						oncomplete="PF('dlgUpdateFloor').show()" icon="ui-icon-pencil"
+						title="#{labels.button_update}" value="#{labels.button_update}"
+						actionListener="#{spacesController.displaySelectedFloor}" />
+
+					<p:commandButton id="btnDeleteFloor"
+						update=":formDeleteFloor:messageFloor"
+						oncomplete="PF('confirmDialogFloor').show()" icon="ui-icon-trash"
+						title="#{labels.button_delete}" value="#{labels.button_delete}"
+						actionListener="#{spacesController.displaySelectedFloor}" />
+				</f:facet>
+			</p:panelGrid>
+		</p:panel>
+
+		<!-- ############ 
+			 #			# 
+			 #	SETOR	# 
+			 #			#
+			 ############ -->
+
+		<p:panel id="panelDetailSector"
+			visible="#{spacesController.visibleDetailSector}"
+			style="border-style: none">
+			<p:panelGrid columns="2" var="sector">
+				<f:facet name="header">${labels.sector}</f:facet>
+				<h:outputText value="#{labels.sector_id} :" />
+				<h:outputText value="#{spacesController.selectedSector.id}" />
+
+				<h:outputText value="#{labels.floor} :" />
+				<h:outputText value="#{spacesController.selectedSector.floor.name}" />
+
+				<h:outputText value="#{labels.sector_name} :" />
+				<h:outputText value="#{spacesController.selectedSector.name}" />
+
+				<h:outputText value="#{labels.sector_description} :" />
+				<h:outputText value="#{spacesController.selectedSector.description}" />
+
+				<h:outputText value="#{labels.sector_total_car_spaces} :" />
+				<h:outputText value="#{spacesController.selectedSector.total_car_spaces}" />
+
+				<h:outputText value="#{labels.sector_total_bike_spaces} :" />
+				<h:outputText value="#{spacesController.selectedSector.total_bike_spaces}" />
+				<f:facet name="footer">
+					<h:inputHidden value="#{spacesController.selectedSector.id}" />
+					<p:separator />
+
+					<p:commandButton id="btnUpdateSector"
+						update=":formUpdateSector:dlgUpdateSector"
+						oncomplete="PF('dlgUpdateSector').show()" icon="ui-icon-pencil"
+						title="#{labels.button_update}" value="#{labels.button_update}"
+						actionListener="#{spacesController.displaySelectedSector}" />
+
+					<p:commandButton id="btnDeleteSector"
+						update=":formDeleteSector:messageSector"
+						oncomplete="PF('confirmDialogSector').show()" icon="ui-icon-trash"
+						title="#{labels.button_delete}" value="#{labels.button_delete}"
+						actionListener="#{spacesController.displaySelectedSector}" />
+				</f:facet>
+			</p:panelGrid>
+		</p:panel>
+	</h:form>
+
+</ui:composition>

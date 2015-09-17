@@ -12,23 +12,23 @@
 			<p:outputPanel id="dlgCreateFloor" style="text-align:center;">
 				<p:panelGrid columns="2">
 
-					<p:outputLabel for="site" value="#{labels.site_name}:" />
+					<p:outputLabel for="site" value="#{labels.site}:" />
 					<p:selectOneMenu id="site" value="#{spacesController.newFloor.site.id}" effect="fade">
 						<f:selectItem itemLabel="#{labels.site_select}" itemValue="0"
 							noSelectionOption="true" />
 						<f:selectItems value="#{spacesController.selectOneSite}" />
 					</p:selectOneMenu>
 					<p:outputLabel for="name" value="#{labels.floor_name}:" />
-					<p:inputText id="name" value="#{spacesController.newFloor.name}" />
+					<p:inputText id="name" value="#{spacesController.newFloor.name}" required="true" label="#{labels.floor_name}"/>
 
 					<h:outputText value="#{labels.floor_description}" />
 					<p:inputText value="#{spacesController.newFloor.description}" />
 					<f:facet name="footer">
 						<p:separator />
 						<p:commandButton id="btnCreateSaveFloor"
-							update=":formData, :formData:msgs, :formShowDetail"
+							update=":formCreateFloor:dlgCreateFloor, :formData, :formData:msgs, :formShowDetail"
 							actionListener="#{spacesController.saveFloor}"
-							oncomplete="handleCreateFloorRequest(xhr, status, args)"
+							oncomplete="validateForm(xhr, status, args, 'formCreateFloor', 'dlgCreateFloor')"
 							icon="ui-icon-disk" title="#{labels.button_save}"
 							value="#{labels.button_save}" />
 						<p:commandButton id="btnCreateCancelFloor"
@@ -41,14 +41,72 @@
 			</p:outputPanel>
 		</p:dialog>
 	</h:form>
-	<script type="text/javascript">
-	    function handleCreateFloorRequest(xhr, status, args) {
-	        if(!args.saved) {
-	            PF('dlgCreateFloor').jq.effect("shake", {times:5}, 100);
-	        }
-	        else {
-	            PF('dlgCreateFloor').hide();
-	        }
-	    }
-	</script>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- #	Form para Edição do item selecionado	# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
+		<h:form id="formUpdateFloor">
+			<p:dialog header="#{labels.floor_update}" widgetVar="dlgUpdateFloor"
+				modal="true" showEffect="fade" hideEffect="explode"
+				resizable="false" focus="name">
+				<p:outputPanel id="dlgUpdateFloor" style="text-align:center;">
+					<p:panelGrid columns="2">
+					<p:outputLabel for="site" value="#{labels.site}:" />
+					<p:selectOneMenu id="site" value="#{spacesController.selectedFloor.site.id}" effect="fade">
+						<f:selectItem itemLabel="#{labels.site_select}" itemValue="0"
+							noSelectionOption="true" />
+						<f:selectItems value="#{spacesController.selectOneSite}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="name" value="#{labels.floor_name}:" />
+					<p:inputText id="name" value="#{spacesController.selectedFloor.name}" required="true" label="#{labels.floor_name}" />
+
+					<h:outputText value="#{labels.floor_description}" />
+					<p:inputText value="#{spacesController.selectedFloor.description}" />
+						<f:facet name="footer">
+							<h:inputHidden value="#{spacesController.selectedFloor.id}" />
+							<p:separator />
+							<p:commandButton id="btnUpdateSaveFloor"
+								update=":formData, :formData:msgs, :formShowDetail, :formUpdateFloor:dlgUpdateFloor"
+								actionListener="#{spacesController.updateFloor}"
+								oncomplete="validateForm(xhr, status, args, 'formUpdateFloor', 'dlgUpdateFloor')"
+								icon="ui-icon-disk" title="#{labels.button_save}"
+								value="#{labels.button_save}" />
+							<p:commandButton id="btnUpdateCancel"
+								oncomplete="PF('dlgUpdateFloor').hide()" icon="ui-icon-cancel"
+								title="#{labels.button_cancel}" value="#{labels.button_cancel}" />
+						</f:facet>
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #	Form para exclusão do item selecionado	# -->
+		<!-- #			  Requer confirmação			# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
+
+		<h:form id="formDeleteFloor">
+			<p:growl id="messageFloor" showDetail="true" />
+
+			<p:confirmDialog id="confirmDialogFloor" widgetVar="confirmDialogFloor"
+				header="#{labels.button_delete}"
+				message="#{labels.floor_confirm_delete}" icon="ui-icon-alert"
+				showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{labels.button_yes}"
+					actionListener="#{spacesController.deleteFloor}"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					update=":formData, :formData:msgs, :formShowDetail"
+					oncomplete="PF('confirmDialogFloor').hide();" />
+				<p:commandButton value="#{labels.button_no}" type="button"
+					styleClass="ui-confirmdialog-no"
+					onclick="PF('confirmDialogFloor').hide();" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</h:form>
 </ui:composition>

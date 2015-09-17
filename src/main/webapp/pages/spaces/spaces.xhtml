@@ -44,45 +44,14 @@
 							update=":formCreateSite:dlgCreateSite" icon="icon-site" />
 						<p:menuitem value="#{labels.floor}" oncomplete="PF('dlgCreateFloor').show()" actionListener="#{spacesController.prepareNewFloor}"
 							update=":formCreateFloor:dlgCreateFloor" disabled="spacesController.EnButtonAddFloor" />
-						<p:menuitem value="#{labels.sector}" disabled="spacesController.EnButtonAddSector" />
+						<p:menuitem value="#{labels.sector}" oncomplete="PF('dlgCreateSector').show()" actionListener="#{spacesController.prepareNewSector}"
+							update=":formCreateSector:dlgCreateSector" disabled="spacesController.EnButtonAddSector" />
 					</p:menuButton>
 				</h:form>
 			</p:layoutUnit>
 
 			<p:layoutUnit position="center">
-				<h:form id="formShowDetail">
-					<p:panel id="panelDetailSite"
-						visible="#{spacesController.visibleDetailSite}"
-						style="border-style: none">
-						<p:panelGrid columns="2" var="site">
-							<f:facet name="header">${labels.site}</f:facet>
-							<h:outputText value="#{labels.site_id} :" />
-							<h:outputText value="#{spacesController.selectedSite.id}" />
-
-							<h:outputText value="#{labels.site_name} :" />
-							<h:outputText value="#{spacesController.selectedSite.name}" />
-
-							<h:outputText value="#{labels.site_description} :" />
-							<h:outputText
-								value="#{spacesController.selectedSite.description}" />
-							<f:facet name="footer">
-								<h:inputHidden value="#{spacesController.selectedSite.id}" />
-								<p:separator />
-
-								<p:commandButton id="btnUpdate"
-									update=":formUpdate:dlgUpdateSite"
-									oncomplete="PF('dlgUpdateSite').show()" icon="ui-icon-pencil"
-									title="#{labels.button_update}" value="#{labels.button_update}"
-									actionListener="#{spacesController.displaySelectedSite}" />
-
-								<p:commandButton id="btnDelete" update=":formDelete:message"
-									oncomplete="PF('confirmDialog').show()" icon="ui-icon-trash"
-									title="#{labels.button_delete}" value="#{labels.button_delete}"
-									actionListener="#{spacesController.displaySelectedSite}" />
-							</f:facet>
-						</p:panelGrid>
-					</p:panel>
-				</h:form>
+				<ui:include src="detail.xhtml" />
 			</p:layoutUnit>
 		</p:layout>
 
@@ -98,6 +67,8 @@
 
 
 		<ui:include src="sites.xhtml" />
+
+		<ui:include src="sector.xhtml" />
 
 	</ui:define>
 </ui:composition>

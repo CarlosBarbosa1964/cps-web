@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formCreateSector">
+		<p:dialog header="#{labels.sector_add}" widgetVar="dlgCreateSector"
+			modal="true" showEffect="fade" hideEffect="explode" resizable="false">
+
+			<p:outputPanel id="dlgCreateSector" style="text-align:center;">
+				<p:panelGrid columns="2">
+
+					<p:outputLabel for="floor" value="#{labels.floor}:" />
+					<p:selectOneMenu id="floor" value="#{spacesController.newSector.floor.id}" effect="fade">
+						<f:selectItem itemLabel="#{labels.floor_select}" itemValue="0"
+							noSelectionOption="true" />
+						<f:selectItems value="#{spacesController.selectOneFloor}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="name" value="#{labels.sector_name}:" />
+					<p:inputText id="name" value="#{spacesController.newSector.name}" required="true" label="#{labels.sector_name}"/>
+
+					<h:outputText value="#{labels.sector_description}" />
+					<p:inputText value="#{spacesController.newSector.description}" />
+					<f:facet name="footer">
+						<p:separator />
+						<p:commandButton id="btnCreateSaveSector"
+							update=":formCreateSector:dlgCreateSector, :formData, :formData:msgs, :formShowDetail"
+							actionListener="#{spacesController.saveSector}"
+							oncomplete="validateForm(xhr, status, args, 'formCreateSector', 'dlgCreateSector')"
+							icon="ui-icon-disk" title="#{labels.button_save}"
+							value="#{labels.button_save}" />
+						<p:commandButton id="btnCreateCancelSector"
+							actionListener="#{spacesController.prepareNewSector}"
+							oncomplete="PF('dlgCreateSector').hide()" icon="ui-icon-cancel"
+							title="#{labels.button_cancel}" value="#{labels.button_cancel}" />
+					</f:facet>
+
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+	</h:form>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- #	Form para Edição do item selecionado	# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
+		<h:form id="formUpdateSector">
+			<p:dialog header="#{labels.sector_update}" widgetVar="dlgUpdateSector"
+				modal="true" showEffect="fade" hideEffect="explode"
+				resizable="false" focus="name">
+				<p:outputPanel id="dlgUpdateSector" style="text-align:center;">
+					<p:panelGrid columns="2">
+					<p:outputLabel for="floor" value="#{labels.floor}:" />
+					<p:selectOneMenu id="floor" value="#{spacesController.selectedSector.floor.id}" effect="fade" required="true">
+						<f:selectItem itemLabel="#{labels.floor_select}" itemValue="0"
+							noSelectionOption="true" />
+						<f:selectItems value="#{spacesController.selectOneFloor}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="name" value="#{labels.sector_name}:" />
+					<p:inputText id="name" value="#{spacesController.selectedSector.name}" required="true" label="#{labels.sector_name}" />
+
+					<h:outputText value="#{labels.sector_description}" />
+					<p:inputText value="#{spacesController.selectedSector.description}" />
+						<f:facet name="footer">
+							<h:inputHidden value="#{spacesController.selectedSector.id}" />
+							<p:separator />
+							<p:commandButton id="btnUpdateSaveSector"
+								update=":formData, :formData:msgs, :formShowDetail, :formUpdateSector:dlgUpdateSector"
+								actionListener="#{spacesController.updateSector}"
+								oncomplete="validateForm(xhr, status, args, 'formUpdateSector', 'dlgUpdateSector')"
+								icon="ui-icon-disk" title="#{labels.button_save}"
+								value="#{labels.button_save}" />
+							<p:commandButton id="btnUpdateCancel"
+								oncomplete="PF('dlgUpdateSector').hide()" icon="ui-icon-cancel"
+								title="#{labels.button_cancel}" value="#{labels.button_cancel}" />
+						</f:facet>
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<!-- ############################################ -->
+		<!-- #											# -->
+		<!-- #	Form para exclusão do item selecionado	# -->
+		<!-- #			  Requer confirmação			# -->
+		<!-- #											# -->
+		<!-- #											# -->
+		<!-- ############################################ -->
+
+		<h:form id="formDeleteSector">
+			<p:growl id="messageSector" showDetail="true" />
+
+			<p:confirmDialog id="confirmDialogSector" widgetVar="confirmDialogSector"
+				header="#{labels.button_delete}"
+				message="#{labels.sector_confirm_delete}" icon="ui-icon-alert"
+				showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{labels.button_yes}"
+					actionListener="#{spacesController.deleteSector}"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					update=":formData, :formData:msgs, :formShowDetail"
+					oncomplete="PF('confirmDialogSector').hide();" />
+				<p:commandButton value="#{labels.button_no}" type="button"
+					styleClass="ui-confirmdialog-no"
+					onclick="PF('confirmDialogSector').hide();" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</h:form>
+</ui:composition>

@@ -20,3 +20,15 @@ function show(elementId) {
 function hide(elementId) {
 	document.getElementById(elementId).style.display = 'none';
 }
+
+function validateForm(xhr, status, args, form, panel) 
+{    
+    if(args.validationFailed || !args.success) 
+    {
+        PF(panel).jq.effect("shake", {times:5}, 100);
+    } 
+    else 
+    {
+    	PF(panel).hide();
+    }  
+}  

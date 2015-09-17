@@ -33,70 +33,90 @@ import br.com.ibtechnology.cpsweb.util.BaseBeans;
 public class SpacesController extends BaseBeans {
 
 	/*
+	 * ############################## # Declaração de # # Variaveis #
 	 * ##############################
-	 * #		Declaração de 		#
-	 * #		  Variaveis			#
-	 * ##############################
-	*/
-	
+	 */
+
 	private static final long serialVersionUID = 1005244262360209206L;
 
 	private static final Logger logger = Logger.getLogger(SpacesController.class);
 
 	@Autowired
-	private ISiteRepository siteRepository; //Repositorio para sites
+	private ISiteRepository siteRepository; // Repositorio para sites
 
 	@Autowired
-	private IFloorRepository floorRepository; //Repositorio para floors
+	private IFloorRepository floorRepository; // Repositorio para floors
 
 	@Autowired
-	private ISectorRepository sectorRepository; //Repositorio para sectors
+	private ISectorRepository sectorRepository; // Repositorio para sectors
 
 	@Autowired
 	private FacesContext context;
 
 	private List<SiteEntity> sites;
-	
+
 	private List<FloorEntity> floors;
-	
-	private List<SelectItem> selectOneSite; //Utilizado para preenchimento do ComboBox
 
-	private List<SelectItem> selectOneFloor; //Utilizado para preenchimento do ComboBox
+	private List<SelectItem> selectOneSite; // Utilizado para preenchimento do
+											// ComboBox
 
-	private SiteEntity selectedSite; //Utilizado para saber qual é o site selecionado
+	private List<SelectItem> selectOneFloor; // Utilizado para preenchimento do
+												// ComboBox
 
-	private SiteEntity newSite; //Novo Site
-	
-	private FloorEntity selectedFloor; //Utilizado para saber qual é o floor selecionado
-	
-	private FloorEntity newFloor; //Novo Floor
+	private SiteEntity selectedSite; // Utilizado para saber qual é o site
+										// selecionado
 
-	private SectorEntity selectedSector; //Utilizado para saber qual é o sector selecionado
-	
-	private SectorEntity newSector; //Novo Floor
+	private SiteEntity newSite; // Novo Site
+
+	private FloorEntity selectedFloor; // Utilizado para saber qual é o floor
+										// selecionado
+
+	private FloorEntity newFloor; // Novo Floor
+
+	private SectorEntity selectedSector; // Utilizado para saber qual é o sector
+											// selecionado
+
+	private SectorEntity newSector; // Novo Floor
 
 	private Long id;
 
-	private TreeNode root;
+	private TreeNode root; // Raiz para elaboração da Arvore contendo Sites ->
+							// Andares -> Setores
 
-	private TreeNode selectedNode;
+	private TreeNode selectedNode; // Item que está selecionado no TreeView
 
-	private String returnLabel;
+	private String returnLabel; // Contem o Label que será exibido no Detalhe
 
-	private boolean visibleDetailSite;
-	
-	private boolean enButtonAddFloor;
+	private boolean visibleDetailSite; // Informa se o DetailSite é visivel
 
-	private boolean enButtonAddSector;
+	private boolean visibleDetailFloor; // Informa se o DetailFloor é visivel
+
+	private boolean visibleDetailSector; // Informa se o DetailFloor é visivel
+
+	private boolean enButtonAddFloor; // Informa se o botão de Adicionar Andar
+										// está disponivel
+
+	private boolean enButtonAddSector; // Informa se o botão de Adicionar Setor
+										// está disponivel
+
+	/*
+	 * Metodos Comuns
+	 */
 
 	public SpacesController() {
 		this.sites = new ArrayList<SiteEntity>();
 		this.floors = new ArrayList<FloorEntity>();
 		this.newSite = new SiteEntity();
-		this.selectedSite = new SiteEntity();
+//		this.selectedSite = new SiteEntity();
+//		this.selectedFloor = new FloorEntity();
+//		this.selectedSector = new SectorEntity();
 		this.prepareNewFloor();
-		this.newSector = new SectorEntity();
+		this.prepareNewSector();
 	}
+
+	/*
+	 * Getters and Setters
+	 */
 
 	public List<SiteEntity> getSites() {
 		this.sites = siteRepository.findAll();
@@ -110,27 +130,27 @@ public class SpacesController extends BaseBeans {
 
 	public List<SelectItem> getSelectOneSite() {
 		this.selectOneSite = new ArrayList<SelectItem>();
-		
+
 		sites = siteRepository.findAll();
 
 		for (SiteEntity st : sites) {
 			SelectItem selectItem = new SelectItem(st.getId(), st.getName());
 			this.selectOneSite.add(selectItem);
 		}
-		
+
 		return selectOneSite;
 	}
 
 	public List<SelectItem> getSelectOneFloor() {
 		this.selectOneFloor = new ArrayList<SelectItem>();
-		
+
 		floors = floorRepository.findAll();
-		
+
 		for (FloorEntity fl : floors) {
 			SelectItem selectItem = new SelectItem(fl.getId(), fl.getName());
 			this.selectOneFloor.add(selectItem);
 		}
-		
+
 		return selectOneFloor;
 	}
 
@@ -198,18 +218,38 @@ public class SpacesController extends BaseBeans {
 	}
 
 	public boolean isVisibleDetailSite() {
-		visibleDetailSite = (this.selectedNode != null && this.selectedNode.getType().equals("site")) ? true : false;
-		return visibleDetailSite;
+		this.visibleDetailSite = (this.selectedNode != null && this.selectedNode.getType().equals("site")) ? true : false;
+		return this.visibleDetailSite;
 	}
 
 	public void setVisibleDetailSite(boolean visibleDetail) {
 		this.visibleDetailSite = visibleDetail;
 	}
 
-	
+	public boolean isVisibleDetailFloor() {
+		this.visibleDetailFloor = (this.selectedNode != null && this.selectedNode.getType().equals("floor")) ? true : false;
+		System.out.println(this.visibleDetailFloor);
+		return this.visibleDetailFloor;
+	}
+
+	public void setVisibleDetailFloor(boolean visibleDetailFloor) {
+		this.visibleDetailFloor = visibleDetailFloor;
+	}
+
+	public boolean isVisibleDetailSector() {
+		this.visibleDetailSector = (this.selectedNode != null && this.selectedNode.getType().equals("sector")) ? true
+				: false;
+		System.out.println(this.visibleDetailFloor);
+		return this.visibleDetailSector;
+	}
+
+	public void setVisibleDetailSector(boolean visibleDetailSector) {
+		this.visibleDetailSector = visibleDetailSector;
+	}
+
 	public boolean isEnButtonAddFloor() {
-		enButtonAddFloor = (this.selectedNode != null && this.selectedNode.getType().equals("site")) ? true : false;
-		return enButtonAddFloor;
+		this.enButtonAddFloor = (this.selectedNode != null && this.selectedNode.getType().equals("site")) ? true : false;
+		return this.enButtonAddFloor;
 	}
 
 	public void setEnButtonAddFloor(boolean enButtonAddFloor) {
@@ -218,13 +258,18 @@ public class SpacesController extends BaseBeans {
 
 	public boolean isEnButtonAddSector() {
 		String Tipo = this.selectedNode.getType();
-		enButtonAddSector = (this.selectedNode != null && this.selectedNode.getType().equals("floor")) ? true : false;
-		return enButtonAddSector;
+		this.enButtonAddSector = (this.selectedNode != null && this.selectedNode.getType().equals("floor")) ? true : false;
+		return this.enButtonAddSector;
 	}
 
 	public void setEnButtonAddSector(boolean enButtonAddSector) {
 		this.enButtonAddSector = enButtonAddSector;
 	}
+
+	/*
+	 * ################################## # Métodos Comuns #
+	 * ##################################
+	 */
 
 	public void onLoad() {
 		this.sites = siteRepository.findAll();
@@ -252,7 +297,7 @@ public class SpacesController extends BaseBeans {
 
 	private void addSectorsNodes(List<SectorEntity> sectors, TreeNode node) {
 		for (SectorEntity sector : sectors) {
-			TreeNode no = new DefaultTreeNode("sector", sector, node);
+			new DefaultTreeNode("sector", sector, node);
 		}
 	}
 
@@ -260,13 +305,17 @@ public class SpacesController extends BaseBeans {
 		// FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
 		// "Selected", event.getTreeNode().toString());
 		// FacesContext.getCurrentInstance().addMessage(null, message);
-		Long idNode;
-		idNode = Long.parseLong(selectedNode.getRowKey());
 		switch (selectedNode.getType()) {
 		case "site":
-			// this.selectedSite =
-			// siteRepository.findOne(Long.parseLong(selectedNode.getRowKey()));
 			this.selectedSite = (SiteEntity) selectedNode.getData();
+			break;
+
+		case "floor":
+			this.selectedFloor = (FloorEntity) selectedNode.getData();
+			break;
+
+		case "sector":
+			this.selectedSector = (SectorEntity) selectedNode.getData();
 			break;
 
 		default:
@@ -278,7 +327,15 @@ public class SpacesController extends BaseBeans {
 		this.selectedSite = (SiteEntity) selectedNode.getData();
 	}
 
-	public void delete() {
+	public void displaySelectedFloor() {
+		this.selectedFloor = (FloorEntity) selectedNode.getData();
+	}
+
+	public void displaySelectedSector() {
+		this.selectedSector = (SectorEntity) selectedNode.getData();
+	}
+
+	public void deleteSite() {
 		FacesMessage message = null;
 		String titleMsg = "";
 		String msg = "";
@@ -332,7 +389,7 @@ public class SpacesController extends BaseBeans {
 
 	public void prepareNewFloor() {
 		this.newFloor = new FloorEntity();
-		this.newFloor.setSite(this.selectedSite);
+		this.newFloor.setSite(getSelectedSite());
 	}
 
 	public void unselectSector() {
@@ -341,9 +398,13 @@ public class SpacesController extends BaseBeans {
 
 	public void prepareNewSector() {
 		this.newSector = new SectorEntity();
+		this.newSector.setFloor(getSelectedFloor());
 	}
 
 	public SiteEntity getSelectedSite() {
+		if (this.selectedSite == null) {
+			this.selectedSite = new SiteEntity();
+		}
 		return this.selectedSite;
 	}
 
@@ -352,6 +413,10 @@ public class SpacesController extends BaseBeans {
 	}
 
 	public FloorEntity getSelectedFloor() {
+		if (this.selectedFloor == null) {
+			this.selectedFloor = new FloorEntity();
+			this.selectedFloor.setSite(new SiteEntity());
+		}
 		return selectedFloor;
 	}
 
@@ -360,6 +425,10 @@ public class SpacesController extends BaseBeans {
 	}
 
 	public SectorEntity getSelectedSector() {
+		if (this.selectedSector == null) {
+			this.selectedSector = new SectorEntity();
+			this.selectedSector.setFloor(new FloorEntity());
+		}
 		return selectedSector;
 	}
 
@@ -388,7 +457,7 @@ public class SpacesController extends BaseBeans {
 		}
 		this.prepareNewSite();
 		FacesContext.getCurrentInstance().addMessage(null, message);
-		context.addCallbackParam("saved", saved);
+		context.addCallbackParam("success", saved);
 		this.onLoad();
 	}
 
@@ -408,14 +477,13 @@ public class SpacesController extends BaseBeans {
 					this.getResourceProperty("labels", "site_update_fail"), this.selectedSite.getName());
 		}
 		FacesContext.getCurrentInstance().addMessage(null, message);
-		context.addCallbackParam("saved", saved);
+		context.addCallbackParam("success", saved);
 	}
 
-/*
- * #############################
- * # Metodos para Classe Floor #
- * #############################
- */
+	/*
+	 * ############################# # Metodos para Classe Floor #
+	 * #############################
+	 */
 	public void saveFloor() {
 		RequestContext context = RequestContext.getCurrentInstance();
 		FacesMessage message = null;
@@ -438,11 +506,132 @@ public class SpacesController extends BaseBeans {
 		}
 		this.prepareNewFloor();
 		FacesContext.getCurrentInstance().addMessage(null, message);
-		context.addCallbackParam("saved", saved);
+		context.addCallbackParam("success", saved);
 		this.onLoad();
 	}
 
-	
+	public void updateFloor() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		FacesMessage message = null;
+		boolean saved = false;
+		// Update
+		this.floorRepository.save(this.selectedFloor);
+		if (this.selectedFloor != null) {
+			saved = true;
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					this.getResourceProperty("labels", "floor_update_success"), this.selectedFloor.getName());
+		} else {
+			saved = false;
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					this.getResourceProperty("labels", "floor_update_fail"), this.selectedFloor.getName());
+		}
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addCallbackParam("success", saved);
+		this.onLoad();
+	}
+
+	public void deleteFloor() {
+		FacesMessage message = null;
+		String titleMsg = "";
+		String msg = "";
+		if (this.selectedFloor != null) {
+			try {
+				this.floorRepository.delete(this.selectedFloor.getId());
+				titleMsg = this.getResourceProperty("labels", "message_title_success");
+				msg = this.getResourceProperty("labels", "floor_deleted_success");
+			} catch (Exception e) {
+				this.selectedFloor = null;
+				titleMsg = this.getResourceProperty("labels", "message_title_error");
+				msg = e.getMessage();
+
+				logger.error(e.getMessage(), e);
+			}
+
+		} else {
+			titleMsg = this.getResourceProperty("labels", "message_title_fail");
+			msg = this.getResourceProperty("labels", "floor_deleted_fail");
+		}
+		message = new FacesMessage(FacesMessage.SEVERITY_INFO, titleMsg, msg);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		this.onLoad();
+	}
+
+	/*
+	 * ############################# # Metodos para Classe Sector #
+	 * #############################
+	 */
+	public void saveSector() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		FacesMessage message = null;
+		boolean saved = false;
+		if (this.newSector != null && !this.newSector.getName().equals("")) {
+			this.newSector.setLast_update(new Date());
+			this.newSector.setFloor(this.selectedFloor);
+			// Add
+			this.sectorRepository.save(this.newSector);
+			if (this.newSector.getId() > 0) {
+				saved = true;
+				message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						this.getResourceProperty("labels", "sector_add_success"), this.newSector.getName());
+				this.selectedSector = this.newSector;
+			} else {
+				saved = false;
+				message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						this.getResourceProperty("labels", "sector_add_fail"), this.newSector.getName());
+			}
+		}
+		this.prepareNewSector();
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addCallbackParam("success", saved);
+		this.onLoad();
+	}
+
+	public void updateSector() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		FacesMessage message = null;
+		boolean saved = false;
+		// Update
+		this.sectorRepository.save(this.selectedSector);
+		if (this.selectedSector != null) {
+			saved = true;
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					this.getResourceProperty("labels", "sector_update_success"), this.selectedSector.getName());
+		} else {
+			saved = false;
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					this.getResourceProperty("labels", "sector_update_fail"), this.selectedSector.getName());
+		}
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addCallbackParam("success", saved);
+		this.onLoad();
+	}
+
+	public void deleteSector() {
+		FacesMessage message = null;
+		String titleMsg = "";
+		String msg = "";
+		if (this.selectedSector != null) {
+			try {
+				this.sectorRepository.delete(this.selectedSector.getId());
+				titleMsg = this.getResourceProperty("labels", "message_title_success");
+				msg = this.getResourceProperty("labels", "sector_deleted_success");
+			} catch (Exception e) {
+				this.selectedSector = null;
+				titleMsg = this.getResourceProperty("labels", "message_title_error");
+				msg = e.getMessage();
+
+				logger.error(e.getMessage(), e);
+			}
+
+		} else {
+			titleMsg = this.getResourceProperty("labels", "message_title_fail");
+			msg = this.getResourceProperty("labels", "sector_deleted_fail");
+		}
+		message = new FacesMessage(FacesMessage.SEVERITY_INFO, titleMsg, msg);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		this.onLoad();
+	}
+
 	private String getResourceProperty(String resource, String label) {
 		context = FacesContext.getCurrentInstance();
 		Application application = this.context.getApplication();
