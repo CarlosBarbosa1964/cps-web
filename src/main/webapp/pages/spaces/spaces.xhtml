@@ -17,11 +17,12 @@
 					<p:growl id="msgs" showDetail="true" escape="false" />
 
 					<h3 style="margin-top: 0">${labels.spaces}</h3>
-					<p:tree value="#{spacesController.root}" var="item"
+					<p:tree id="SpacesTree" value="#{spacesController.root}" var="item"
 						selectionMode="single"
 						selection="#{spacesController.selectedNode}" dynamic="true">
 
-						<p:ajax event="select" update=":formData, :formShowDetail, :formData:msgs"
+						<p:ajax event="select"
+							update=":formData, :formShowDetail, :formData:msgs"
 							listener="#{spacesController.onNodeSelect}" />
 
 						<p:treeNode type="site" expandedIcon="ui-icon-folder-open"
@@ -42,11 +43,60 @@
 						<p:menuitem value="#{labels.site}"
 							oncomplete="PF('dlgCreateSite').show()"
 							update=":formCreateSite:dlgCreateSite" icon="icon-site" />
-						<p:menuitem value="#{labels.floor}" oncomplete="PF('dlgCreateFloor').show()" actionListener="#{spacesController.prepareNewFloor}"
-							update=":formCreateFloor:dlgCreateFloor" disabled="spacesController.EnButtonAddFloor" />
-						<p:menuitem value="#{labels.sector}" oncomplete="PF('dlgCreateSector').show()" actionListener="#{spacesController.prepareNewSector}"
-							update=":formCreateSector:dlgCreateSector" disabled="spacesController.EnButtonAddSector" />
+						<p:menuitem value="#{labels.floor}"
+							oncomplete="PF('dlgCreateFloor').show()"
+							actionListener="#{spacesController.prepareNewFloor}"
+							update=":formCreateFloor:dlgCreateFloor"
+							disabled="#{spacesController.enButtonAddFloor}" />
+						<p:menuitem value="#{labels.sector}"
+							oncomplete="PF('dlgCreateSector').show()"
+							actionListener="#{spacesController.prepareNewSector}"
+							update=":formCreateSector:dlgCreateSector"
+							disabled="#{spacesController.enButtonAddSector}" />
 					</p:menuButton>
+
+
+					<p:contextMenu for="SpacesTree" nodeType="site">
+						<p:menuitem value="#{labels.button_update}" icon="ui-icon-pencil"
+							oncomplete="PF('dlgUpdateSite').show()"
+							actionListener="#{spacesController.displaySelectedSite}"
+							update=":formUpdate:dlgUpdateSite" />
+						<p:menuitem value="#{labels.button_delete}" icon="ui-icon-trash"
+							oncomplete="PF('confirmDialog').show()"
+							actionListener="#{spacesController.displaySelectedSite}"
+							update=":formDelete:message" />
+						<p:separator />
+						<p:menuitem value="#{labels.button_add_floor}"
+							oncomplete="PF('dlgCreateFloor').show()"
+							actionListener="#{spacesController.prepareNewFloor}"
+							update=":formCreateFloor:dlgCreateFloor" />
+					</p:contextMenu>
+					<p:contextMenu for="SpacesTree" nodeType="floor">
+						<p:menuitem update=":formUpdateFloor:dlgUpdateFloor"
+							oncomplete="PF('dlgUpdateFloor').show()" icon="ui-icon-pencil"
+							title="#{labels.button_update}" value="#{labels.button_update}"
+							actionListener="#{spacesController.displaySelectedFloor}" />
+						<p:menuitem update=":formDeleteFloor:messageFloor"
+							oncomplete="PF('confirmDialogFloor').show()" icon="ui-icon-trash"
+							title="#{labels.button_delete}" value="#{labels.button_delete}"
+							actionListener="#{spacesController.displaySelectedFloor}" />
+						<p:separator />
+						<p:menuitem value="#{labels.button_add_sector}"
+							oncomplete="PF('dlgCreateSector').show()"
+							actionListener="#{spacesController.prepareNewSector}"
+							update=":formCreateSector:dlgCreateSector" />
+					</p:contextMenu>
+					<p:contextMenu for="SpacesTree" nodeType="sector">
+						<p:menuitem update=":formUpdateSector:dlgUpdateSector"
+							oncomplete="PF('dlgUpdateSector').show()" icon="ui-icon-pencil"
+							title="#{labels.button_update}" value="#{labels.button_update}"
+							actionListener="#{spacesController.displaySelectedSector}" />
+						<p:menuitem update=":formDeleteSector:messageSector"
+							oncomplete="PF('confirmDialogSector').show()"
+							icon="ui-icon-trash" title="#{labels.button_delete}"
+							value="#{labels.button_delete}"
+							actionListener="#{spacesController.displaySelectedSector}" />
+					</p:contextMenu>
 				</h:form>
 			</p:layoutUnit>
 

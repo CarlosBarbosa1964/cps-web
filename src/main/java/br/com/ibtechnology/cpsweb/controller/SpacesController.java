@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,6 +188,12 @@ public class SpacesController extends BaseBeans {
 	}
 
 	public TreeNode getRoot() {
+		if (this.root ==null )
+		{
+			this.root = new DefaultTreeNode(null,null);
+			this.sites = siteRepository.findAll();
+			addSiteNodes(this.sites, this.root);
+		}
 		return root;
 	}
 
@@ -228,7 +235,6 @@ public class SpacesController extends BaseBeans {
 
 	public boolean isVisibleDetailFloor() {
 		this.visibleDetailFloor = (this.selectedNode != null && this.selectedNode.getType().equals("floor")) ? true : false;
-		System.out.println(this.visibleDetailFloor);
 		return this.visibleDetailFloor;
 	}
 
@@ -239,7 +245,6 @@ public class SpacesController extends BaseBeans {
 	public boolean isVisibleDetailSector() {
 		this.visibleDetailSector = (this.selectedNode != null && this.selectedNode.getType().equals("sector")) ? true
 				: false;
-		System.out.println(this.visibleDetailFloor);
 		return this.visibleDetailSector;
 	}
 
@@ -248,7 +253,7 @@ public class SpacesController extends BaseBeans {
 	}
 
 	public boolean isEnButtonAddFloor() {
-		this.enButtonAddFloor = (this.selectedNode != null && this.selectedNode.getType().equals("site")) ? true : false;
+		this.enButtonAddFloor = (this.selectedNode != null && this.selectedNode.getType().equals("site")) ? false : true;
 		return this.enButtonAddFloor;
 	}
 
@@ -257,8 +262,7 @@ public class SpacesController extends BaseBeans {
 	}
 
 	public boolean isEnButtonAddSector() {
-		String Tipo = this.selectedNode.getType();
-		this.enButtonAddSector = (this.selectedNode != null && this.selectedNode.getType().equals("floor")) ? true : false;
+		this.enButtonAddSector = (this.selectedNode != null && this.selectedNode.getType().equals("floor")) ? false : true;
 		return this.enButtonAddSector;
 	}
 
@@ -335,32 +339,16 @@ public class SpacesController extends BaseBeans {
 		this.selectedSector = (SectorEntity) selectedNode.getData();
 	}
 
-	public void deleteSite() {
-		FacesMessage message = null;
-		String titleMsg = "";
-		String msg = "";
-		if (this.selectedSite != null) {
-			try {
-				this.siteRepository.delete(this.selectedSite.getId());
-				titleMsg = this.getResourceProperty("labels", "message_title_success");
-				msg = this.getResourceProperty("labels", "site_deleted_success");
-			} catch (Exception e) {
-				this.selectedSite = null;
-				titleMsg = this.getResourceProperty("labels", "message_title_error");
-				msg = e.getMessage();
-
-				logger.error(e.getMessage(), e);
-			}
-
-		} else {
-			titleMsg = this.getResourceProperty("labels", "message_title_fail");
-			msg = this.getResourceProperty("labels", "site_deleted_fail");
-		}
-		message = new FacesMessage(FacesMessage.SEVERITY_INFO, titleMsg, msg);
-		FacesContext.getCurrentInstance().addMessage(null, message);
-		this.onLoad();
-	}
-
+    public void onDragDrop(TreeDragDropEvent event) {
+        TreeNode dragNode = event.getDragNode();
+        TreeNode dropNode = event.getDropNode();
+        int dropIndex = event.getDropIndex();
+         
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+	
+	
 	public void selectSite(SelectEvent evt) {
 		try {
 			if (evt.getObject() != null) {
@@ -480,6 +468,42 @@ public class SpacesController extends BaseBeans {
 		context.addCallbackParam("success", saved);
 	}
 
+	public void deleteSite() {
+		FacesMessage message = null;
+		String titleMsg = "";
+		String msg = "";
+		if (this.selectedSite != null) {
+			try {
+				System.out.println("Start delete site ID=" + this.selectedSite.getId());
+				this.siteRepository.delete(this.selectedSite.getId());
+				System.out.println("Site Null = " + this.selectedSite==null);
+				titleMsg = this.getResourceProperty("labels", "message_title_success");
+				msg = this.getResourceProperty("labels", "site_deleted_success");
+			} catch (Exception e) {
+				this.selectedSite = null;
+				titleMsg = this.getResourceProperty("labels", "message_title_error");
+				msg = e.getMessage();
+
+				logger.error(e.getMessage(), e);
+			}
+
+		} else {
+			titleMsg = this.getResourceProperty("labels", "message_title_fail");
+			msg = this.getResourceProperty("labels", "site_deleted_fail");
+		}
+		message = new FacesMessage(FacesMessage.SEVERITY_INFO, titleMsg, msg);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		this.onLoad();
+	}
+
+	public void reset() {
+		this.selectedSite=null;
+		this.selectedNode=null;
+		this.selectedSector=null;
+		this.selectedFloor=null;
+		
+	}
+
 	/*
 	 * ############################# # Metodos para Classe Floor #
 	 * #############################
@@ -536,7 +560,9 @@ public class SpacesController extends BaseBeans {
 		String msg = "";
 		if (this.selectedFloor != null) {
 			try {
+				System.out.println("Start delete floor ID=" + this.selectedFloor.getId());
 				this.floorRepository.delete(this.selectedFloor.getId());
+				System.out.println("Floor Null =" + this.selectedFloor==null);
 				titleMsg = this.getResourceProperty("labels", "message_title_success");
 				msg = this.getResourceProperty("labels", "floor_deleted_success");
 			} catch (Exception e) {
@@ -612,7 +638,9 @@ public class SpacesController extends BaseBeans {
 		String msg = "";
 		if (this.selectedSector != null) {
 			try {
-				this.sectorRepository.delete(this.selectedSector.getId());
+				System.out.println("Start delete sector ID=" + this.selectedSector.getId());
+				this.sectorRepository.deleteByID(this.selectedSector.getId());
+				System.out.println("Sector is Null =" + this.selectedSector==null);
 				titleMsg = this.getResourceProperty("labels", "message_title_success");
 				msg = this.getResourceProperty("labels", "sector_deleted_success");
 			} catch (Exception e) {

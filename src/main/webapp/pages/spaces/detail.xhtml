@@ -107,10 +107,12 @@
 				<h:outputText value="#{spacesController.selectedSector.description}" />
 
 				<h:outputText value="#{labels.sector_total_car_spaces} :" />
-				<h:outputText value="#{spacesController.selectedSector.total_car_spaces}" />
+				<h:outputText
+					value="#{spacesController.selectedSector.total_car_spaces}" />
 
 				<h:outputText value="#{labels.sector_total_bike_spaces} :" />
-				<h:outputText value="#{spacesController.selectedSector.total_bike_spaces}" />
+				<h:outputText
+					value="#{spacesController.selectedSector.total_bike_spaces}" />
 				<f:facet name="footer">
 					<h:inputHidden value="#{spacesController.selectedSector.id}" />
 					<p:separator />
